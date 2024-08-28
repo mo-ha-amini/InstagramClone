@@ -1,4 +1,7 @@
 
+using Models;
+using Repository;
+
 namespace InstagramClone.API
 {
     public class Program
@@ -6,13 +9,18 @@ namespace InstagramClone.API
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
+            ConfigurationManager configuration = builder.Configuration;
             // Add services to the container.
 
             builder.Services.AddControllers();
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+            builder.Services.AddOptions();
+
+            builder.Services.Configure<DatabaseConnectionModel>(configuration.GetSection("DatabaseSetting"));
+
+            builder.Services.AddSingleton<IDatabaseConnection, DatabaseConnection>();
 
             var app = builder.Build();
 
