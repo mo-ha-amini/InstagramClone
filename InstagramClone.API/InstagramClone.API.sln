@@ -3,7 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35004.147
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InstagramClone.API", "InstagramClone.API\InstagramClone.API.csproj", "{9C086778-800B-44BD-ADF0-9EC099C6E946}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InstagramClone.API", "InstagramClone.API\InstagramClone.API.csproj", "{9C086778-800B-44BD-ADF0-9EC099C6E946}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Models", "Models\Models.csproj", "{EE21B305-49F2-4789-8084-5DA32E17A8D0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Repository", "Repository\Repository.csproj", "{ECA89A34-6FBA-412B-91A1-E6DE16AFA003}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Service", "Service\Service.csproj", "{EDD85D85-5668-420F-90A9-B3322AF8E275}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +21,18 @@ Global
 		{9C086778-800B-44BD-ADF0-9EC099C6E946}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C086778-800B-44BD-ADF0-9EC099C6E946}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9C086778-800B-44BD-ADF0-9EC099C6E946}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EE21B305-49F2-4789-8084-5DA32E17A8D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EE21B305-49F2-4789-8084-5DA32E17A8D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EE21B305-49F2-4789-8084-5DA32E17A8D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EE21B305-49F2-4789-8084-5DA32E17A8D0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ECA89A34-6FBA-412B-91A1-E6DE16AFA003}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ECA89A34-6FBA-412B-91A1-E6DE16AFA003}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ECA89A34-6FBA-412B-91A1-E6DE16AFA003}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ECA89A34-6FBA-412B-91A1-E6DE16AFA003}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EDD85D85-5668-420F-90A9-B3322AF8E275}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EDD85D85-5668-420F-90A9-B3322AF8E275}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EDD85D85-5668-420F-90A9-B3322AF8E275}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EDD85D85-5668-420F-90A9-B3322AF8E275}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
