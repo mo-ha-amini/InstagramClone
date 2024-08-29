@@ -88,14 +88,21 @@ namespace Repository
                 //parameters.Add(name: "@password", value: model.Password);
 
                 result.Data = await connection.Data.QueryFirstOrDefaultAsync<LoginResponse>(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
-                result.Data.Token = "";
+               
 
                 if (result.Data != null)
                 {
                     bool verified = BCrypt.Net.BCrypt.Verify(model.Password, result.Data.Password);
                     if (verified)
                     {
+                        result.Data.Token = "";
                         result.IsSuccess = true;
+                    }
+                    else
+                    {
+                        result.Data = null;
+                        result.IsSuccess = false;
+                        result.Message = "Invalid Username Or Password";
                     }
                 }
                 else
