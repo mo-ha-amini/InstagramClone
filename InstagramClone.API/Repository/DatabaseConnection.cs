@@ -1,7 +1,9 @@
-﻿using Microsoft.Extensions.Options;
+﻿using Microsoft.Data.SqlClient;
+using Microsoft.Extensions.Options;
 using Models;
 using Oracle.ManagedDataAccess.Client;
 using System.Data;
+//using System.Data.SqlClient;
 
 namespace Repository
 {
@@ -26,12 +28,12 @@ namespace Repository
             {
                 if(_connection == null)
                 {
-                    _connection = new OracleConnection(_connectionModel.ConnectionString);
+                    _connection = new SqlConnection(_connectionModel.ConnectionString);
                 }
                 result.IsSuccess = true;
                 result.Data = _connection;  
             }
-            catch (Exception)
+            catch (Exception ex)
             {
 
                 result.IsSuccess = false;

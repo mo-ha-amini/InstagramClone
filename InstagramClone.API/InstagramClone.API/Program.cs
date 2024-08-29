@@ -1,6 +1,7 @@
 
 using Models;
 using Repository;
+using Service;
 
 namespace InstagramClone.API
 {
@@ -22,6 +23,15 @@ namespace InstagramClone.API
 
             builder.Services.AddSingleton<IDatabaseConnection, DatabaseConnection>();
 
+
+            #region repository
+            builder.Services.AddSingleton<IUserRepository, UserRepository>();
+            #endregion
+
+
+            #region Service
+            builder.Services.AddSingleton<IUserService, UserService>();
+            #endregion
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
