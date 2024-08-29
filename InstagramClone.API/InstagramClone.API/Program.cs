@@ -1,7 +1,10 @@
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
 using Models;
 using Repository;
 using Service;
+using System.Text;
 
 namespace InstagramClone.API
 {
@@ -20,6 +23,7 @@ namespace InstagramClone.API
             builder.Services.AddOptions();
 
             builder.Services.Configure<DatabaseConnectionModel>(configuration.GetSection("DatabaseSetting"));
+            builder.Services.Configure<JwtConfigModel>(configuration.GetSection("JWT"));
 
             builder.Services.AddSingleton<IDatabaseConnection, DatabaseConnection>();
 
@@ -32,6 +36,21 @@ namespace InstagramClone.API
             #region Service
             builder.Services.AddSingleton<IUserService, UserService>();
             #endregion
+
+            builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(
+                options =>
+                {
+                    options.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidateIssuer = false,
+                        ValidateAudience = false,
+                        ValidateLifetime = true,
+                        ValidateIssuerSigningKey = true,
+                        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration.GetSection("JWT:Key").Value)),
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -44,7 +63,7 @@ namespace InstagramClone.API
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
-
+            app.UseAuthorization();
 
             app.MapControllers();
 

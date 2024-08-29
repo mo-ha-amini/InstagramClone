@@ -6,17 +6,18 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Models.DTO.Request;
+using Models.DTO.Response;
+
 using Dapper;
 using System.Data;
-using System.Reflection;
-using System.Xml.Linq;
-using Azure.Core;
 
 namespace Repository
 {
     public interface IUserRepository
     {
         Task<CustomActionResult> CreateUser(CreateUserRequest model);
+        Task<CustomActionResult<LoginResponse>> GetUserByUsernameAndPassword(LoginRequest model);
+
     }
 
     public class UserRepository : IUserRepository
@@ -66,6 +67,51 @@ namespace Repository
                 result.IsSuccess = false;
                 result.Message = "create user failed";
             }
+            return result;
+        }
+
+        public async Task<CustomActionResult<LoginResponse>> GetUserByUsernameAndPassword(LoginRequest model)
+        {
+            CustomActionResult<LoginResponse> result = new CustomActionResult<LoginResponse>();
+
+            try
+            {
+                CustomActionResult<IDbConnection> connection = await _databaseConnection.GetConnection();
+                result.IsSuccess = connection.IsSuccess;
+                result.Message = connection.Message;
+                if (!result.IsSuccess) return result;
+
+                string command = "prc_find_user_by_username";
+
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add(name: "@username", value: model.Username);
+                //parameters.Add(name: "@password", value: model.Password);
+
+                result.Data = await connection.Data.QueryFirstOrDefaultAsync<LoginResponse>(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
+                result.Data.Token = "";
+
+                if (result.Data != null)
+                {
+                    bool verified = BCrypt.Net.BCrypt.Verify(model.Password, result.Data.Password);
+                    if (verified)
+                    {
+                        result.IsSuccess = true;
+                    }
+                }
+                else
+                {
+                    result.Data = null;
+                    result.IsSuccess = false;
+                    result.Message = "Invalid Username Or Password";
+                }
+            }
+            catch (Exception)
+            {
+                result.Data = null;
+                result.IsSuccess = false;
+                result.Message = "Error Geting Userinfo.";
+            }
+
             return result;
         }
     }

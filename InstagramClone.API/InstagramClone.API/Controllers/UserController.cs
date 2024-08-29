@@ -20,5 +20,12 @@ namespace InstagramClone.API.Controllers
         {
             return Ok(await _userService.CreateUser(model));
         }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Login(LoginRequest model)
+        {
+            return Ok(await _userService.LoginUserByUsernameAndPassword(model));
+        }
     }
 }
