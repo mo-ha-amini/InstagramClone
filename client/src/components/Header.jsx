@@ -9,20 +9,24 @@ import {
 } from '@heroicons/react/outline';
 import UserContext from '../context/user';
 import * as ROUTES from '../constants/routes';
-import { Link } from 'react-router-dom';
-import { getAuth, signOut } from 'firebase/auth';
+import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { postModalState, searchBarModalState } from '../atoms/modalAtom';
 import useUser from '../hooks/use-user';
+import {logout} from '../features/auth/authActions'
+import { useDispatch } from 'react-redux';
 
 function Header() {
+  const dispatch = useDispatch()
+  const navigate = useNavigate()
   const { user } = useContext(UserContext);
   const [open, setOpen] = useRecoilState(postModalState);
   const [isOpen, setIsOpen] = useRecoilState(searchBarModalState);
-  const auth = getAuth();
+
   const {
     user: { username, image, userId, following }
   } = useUser();
+
   return (
     <div className="fixed top-0 z-50 w-screen border-b bg-white shadow-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-evenly">
@@ -64,20 +68,24 @@ function Header() {
                 )}
               </div>
               <PlusCircleIcon onClick={() => setOpen(true)} className="navButton" />
-              <Link to={ROUTES.LOGIN}>
+              {/* <Link to={ROUTES.LOGIN}> */}
                 <button
                   type="button"
                   aria-label="Log Out"
-                  onClick={() => signOut(auth)}
+                  onClick={() => {
+                    dispatch(logout())
+                    navigate(ROUTES.LOGIN)
+                  }}
                   onKeyDown={(event) => {
                     if (event.key === 'Enter') {
-                      signOut(auth);
+                      dispatch(logout())
+                      navigate(ROUTES.LOGIN)
                     }
                   }}
                 >
                   <LogoutIcon className="navButton mt-[6px] sm:mt-[1px] " />
                 </button>
-              </Link>
+              {/* </Link> */}
               <div className="items-center">
                 <Link to={`/profile/${username}`}>
                   <img

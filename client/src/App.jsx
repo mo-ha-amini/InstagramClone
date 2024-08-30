@@ -5,6 +5,7 @@ import useAuthListener from './hooks/use-auth-listener';
 import UserContext from './context/user';
 import ProtectedRoutes from './helpers/protected-route';
 import LoadRoutes from './helpers/load-routes';
+import { useSelector } from 'react-redux';
 
 const Login = lazy(() => import('./pages/login'));
 const SignUp = lazy(() => import('./pages/sign-up'));
@@ -14,7 +15,7 @@ const Profile = lazy(() => import('./pages/profile'));
 const Messages = lazy(() => import('./pages/messages'));
 
 function App() {
-  const user = true
+  const {user} = useSelector((state) => state.auth)
   return (
     <UserContext.Provider value={{ user }}>
         <Suspense
@@ -31,8 +32,7 @@ function App() {
           <LoadRoutes>
             <Route path={ROUTES.LOGIN} element={<Login />} />
             <Route path={ROUTES.SIGN_UP} element={<SignUp />} />
-            <Route path={ROUTES.DASHBOARD} element={<Dashboard />} />
-            {/* <Route path={ROUTES.PROFILE} element={<Profile />} />
+            <Route path={ROUTES.PROFILE} element={<Profile />} />
             <Route path={ROUTES.MESSAGES} element={<Messages />} />
             <Route
               path={ROUTES.DASHBOARD}
@@ -41,7 +41,7 @@ function App() {
                   <Dashboard />
                 </ProtectedRoutes>
               }
-            /> */}
+            />
             <Route path="*" element={<NotFound />} />
           </LoadRoutes>
         </Suspense>

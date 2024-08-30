@@ -1,109 +1,94 @@
 import React, { useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { createUserWithEmailAndPassword, getAuth, updateProfile } from 'firebase/auth';
-import { doesUsernameExist } from '../services/firebase';
-import { addDoc, collection, getFirestore, serverTimestamp } from 'firebase/firestore';
-import { firebaseApp } from '../lib/firebase';
 import * as ROUTES from '../constants/routes';
+import { useSelector, useDispatch } from 'react-redux'
+import { useForm } from 'react-hook-form'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import { ToastContainer, toast } from 'react-toastify'
 
-const db = getFirestore(firebaseApp);
+import { SignIn } from '../features/auth/authActions'
+
+
+const schema = yup
+  .object({
+    username: yup.string().required('Username is required.'),
+    email: yup
+      .string()
+      .email('Please enter a valid email address.')
+      .required('Email is required.'),
+    password: yup
+      .string()
+      .min(6, 'Password must be at least 6 characters long.')
+      .max(20, 'Password cannot be longer than 20 characters.')
+      .required('Password is required.'),
+    confirmPassword: yup
+      .string()
+      .required('Confirm password is required.')
+      .oneOf([yup.ref('password'), null], 'Passwords must match.'),
+    name: yup.string()
+      .required('Name is required.'),
+  })
+  .required();
+
+
 function SignUp() {
+ 
   const navigate = useNavigate();
-  const [emailAddress, setEmailAddress] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
-  const [error, setError] = useState('');
-  const [username, setUsername] = useState('');
-  const [fullName, setFullName] = useState('');
-  const [loading, setLoading] = useState(false);
-  const auth = getAuth();
-  const isInvalid =
-    password === '' ||
-    emailAddress === '' ||
-    fullName === '' ||
-    username === '' ||
-    confirmPassword === '';
+  const dispatch = useDispatch();
+  const { signInLoading, signInError, signInSuccess, } = useSelector(
+      (state) => state.auth
+    )
 
-  const handleSignUp = async (event) => {
-    event.preventDefault();
-    const usernameExists = await doesUsernameExist(username);
-    if (password !== confirmPassword) {
-      setError('Passwords Donot Match.');
-      setPassword('');
-      setConfirmPassword('');
-      setLoading(false);
-    } else if (!/^[A-Za-z ]+$/.test(fullName)) {
-      setError('Invalid Name.');
-      setFullName('');
-      setLoading(false);
-    } else if (username.length > 10) {
-      setError('Username can be maximum of 10 characters.');
-      setUsername('');
-      setLoading(false);
-    } else if (!usernameExists.length) {
-      try {
-        const createdUserResult = await createUserWithEmailAndPassword(
-          auth,
-          emailAddress,
-          password
-        );
-        await updateProfile(createdUserResult.user, {
-          displayName: username
-        });
-        await addDoc(collection(db, 'users'), {
-          userId: createdUserResult.user.uid,
-          username: username.toLowerCase(),
-          fullName,
-          emailAddress: emailAddress.toLowerCase(),
-          following: [],
-          followers: [],
-          dateCreated: Date.now(),
-          image: '/images/default.png',
-          bio: '',
-          lastSeen: serverTimestamp()
-        });
-        navigate(ROUTES.LOGIN);
-      } catch (error) {
-        if (error) setLoading(false);
-        if (error.code === 'auth/email-already-exists') {
-          setError('Email already exists.');
-          setEmailAddress('');
-          setPassword('');
-          setConfirmPassword('');
-        } else if (error.code === 'auth/invalid-email') {
-          setError('Invalid Email. Please check.');
-          setEmailAddress('');
-          setPassword('');
-          setConfirmPassword('');
-        } else if (error.code === 'auth/invalid-display-name') {
-          setError("Invalid Username. Only alphanumeric characters and '_' and '.' are allowed.");
-          setUsername('');
-        } else if (error.code === 'auth/invalid-password') {
-          setError('Invalid Password. Must be atleast 6 characters.');
-          setPassword('');
-          setConfirmPassword('');
-        } else if (error.code === 'auth/weak-password') {
-          setError('Choose a stronger password.');
-          setPassword('');
-          setConfirmPassword('');
-        } else {
-          setError(error.code);
-          setFullName('');
-          setEmailAddress('');
-          setPassword('');
-          setConfirmPassword('');
-          setUsername('');
-        }
-      }
-    } else {
-      setUsername('');
-      setLoading(false);
-      setError('Username already exists. Please choose another one');
+  const {
+        register,
+        formState: { errors },
+        handleSubmit,
+    } = useForm({
+        resolver: yupResolver(schema),
+        mode: 'all',
+    })
+
+    const onSubmit = (data) => {
+        dispatch(SignIn(data))
     }
-  };
+
+
+  
   useEffect(() => {
     document.title = 'Sign Up - Instagram 2.0';
   }, []);
+
+  
+  useEffect(() => {
+    if (!signInLoading && signInSuccess) {
+        toast.success(`SignIn Success`, {
+            position: 'top-right',
+            autoClose: 1000,
+            hideProgressBar: false,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+            progress: undefined,
+            theme: 'light',
+            rtl: true,
+        })
+        navigate('/login')
+    }
+    if (!signInLoading && (signInError)) {
+      toast.error(`SignIn Failed.`, {
+          position: 'top-right',
+          autoClose: 1000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: 'light',
+          rtl: true,
+      })
+  }
+}, [signInLoading, signInError, signInSuccess])
 
   return (
     <div className="grid">
@@ -117,8 +102,7 @@ function SignUp() {
               Sign up to see photos and videos from your friends.
             </p>
           </h1>
-          {error && <p className="error-text">{error}</p>}
-          <form method="POST" onSubmit={handleSignUp}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <input
               type="text"
               autoComplete="name"
@@ -126,11 +110,13 @@ function SignUp() {
               aria-label="Enter Your Full Name"
               placeholder="Full Name"
               className="input"
-              onChange={({ target }) => {
-                setFullName(target.value), setError();
-              }}
-              value={fullName}
+              {...register('name')}
             />
+            {errors.name && (
+                    <p className=" mt-2  text-danger-500 block text-sm">
+                        {errors.name.message}
+                    </p>
+            )}
             <input
               type="text"
               autoComplete="username"
@@ -138,11 +124,13 @@ function SignUp() {
               aria-label="Enter Your Username"
               placeholder="Username"
               className="input "
-              onChange={({ target }) => {
-                setUsername(target.value), setError();
-              }}
-              value={username}
+              {...register('username')}
             />
+            {errors.username && (
+                    <p className=" mt-2  text-danger-500 block text-sm">
+                        {errors.username.message}
+                    </p>
+            )}
             <input
               type="email"
               autoComplete="email"
@@ -150,10 +138,31 @@ function SignUp() {
               aria-label="Enter Your Email Address"
               placeholder="Email Address"
               className="input "
-              onChange={({ target }) => {
-                setEmailAddress(target.value), setError();
-              }}
-              value={emailAddress}
+              {...register('email')}
+            />
+            {errors.email && (
+                    <p className=" mt-2  text-danger-500 block text-sm">
+                        {errors.email.message}
+                    </p>
+            )}
+            <input
+              type="text"
+              autoComplete="Gender"
+              required
+              aria-label="Enter Your Gender"
+              placeholder="Gender"
+              className="input "
+              {...register('gender')}
+            />
+           
+            <input
+              type="number"
+              autoComplete="09120000000"
+              required
+              aria-label="Enter Your PhoneNumber"
+              placeholder="Phone Number"
+              className="input "
+              {...register('phoneNumber')}
             />
             <input
               type="password"
@@ -162,11 +171,13 @@ function SignUp() {
               aria-label="Enter Your Password"
               placeholder="Password"
               className="input"
-              onChange={({ target }) => {
-                setPassword(target.value), setError();
-              }}
-              value={password}
+              {...register('password')}
             />
+            {errors.password && (
+                    <p className=" mt-2  text-danger-500 block text-sm">
+                        {errors.password.message}
+                    </p>
+            )}
             <input
               type="password"
               autoComplete="new-password"
@@ -174,18 +185,19 @@ function SignUp() {
               aria-label="Confirm Your Password"
               placeholder="Confirm Password"
               className="input"
-              onChange={({ target }) => {
-                setConfirmPassword(target.value), setError();
-              }}
-              value={confirmPassword}
+              {...register('confirmPassword')}
             />
+            {errors.confirmPassword && (
+                    <p className=" mt-2  text-danger-500 block text-sm">
+                        {errors.confirmPassword.message}
+                    </p>
+            )}
             <button
-              className={`submit ${isInvalid && ' bg-opacity-40'}`}
-              disabled={isInvalid === true}
+              className={`submit`}
+              disabled={signInError || signInLoading}
               type="submit"
-              onClick={() => setLoading(true)}
             >
-              {loading ? 'Creating Your Account' : 'Sign Up'}
+              {signInLoading ? 'Creating Your Account' : 'Sign Up'}
             </button>
           </form>
         </div>

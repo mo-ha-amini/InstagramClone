@@ -13,22 +13,19 @@ export const login = createAsyncThunk(
     'auth/login',
     async ({ username, password }, { rejectWithValue }) => {
         try {
-            // configure header's Content-Type as JSON
             const config = {
                 headers: {
                     'Content-Type': 'application/json',
                 },
             }
             const { data } = await axios.post(
-                `https://localhost:7198/api/User/Login`,
+                `${backendURL}/api/User/Login`,
                 { username, password },
                 config
             )
-            console.log(data)
-            localStorage.setItem('user', JSON.stringify(data))
+            localStorage.setItem('user', JSON.stringify(data.data))
             return data
         } catch (error) {
-            // return custom error message from API if any
             if (error.response && error.response.data) {
                 return rejectWithValue(error.response.data)
             } else {
@@ -37,3 +34,36 @@ export const login = createAsyncThunk(
         }
     }
 )
+
+export const SignIn = createAsyncThunk(
+    'auth/SignIn',
+    async ({ username, password, email, gender, name, phoneNumber}, { rejectWithValue }) => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+            }
+            console.log({username, password, email, gender, name, phoneNumber })
+
+            const { data } = await axios.post(
+                `${backendURL}/api/User/SignIn`,
+                {username, password, email, gender, name, phoneNumber, bio:'' },
+                config
+            )
+            // console.log({username, password, email, gender, name, bio, phoneNumber })
+            return data
+        } catch (error) {
+            if (error.response && error.response.data) {
+                return rejectWithValue(error.response.data)
+            } else {
+                return rejectWithValue(error.message)
+            }
+        }
+    }
+)
+
+export const logout = createAsyncThunk('auth/logout', async () => {
+  localStorage.removeItem('user');
+  return null;
+});

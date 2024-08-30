@@ -11,12 +11,12 @@ import CommentLikesModal from '../components/Modals/CommentLikesModal';
 import TopScroll from '../components/TopScroll';
 import SearchBarModal from '../components/Modals/SearchBarModal';
 
+
 function Dashboard() {
   useEffect(() => {
     document.title = 'Instagram 2.0 Clone';
   }, []);
   const { user } = useContext(UserContext);
-
   return (
     <div className="h-full min-h-screen overflow-hidden">
       <SearchBarModal />

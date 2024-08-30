@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { Fragment, useEffect, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import * as ROUTES from '../constants/routes';
 import { useSelector, useDispatch } from 'react-redux'
@@ -26,6 +26,7 @@ function Login() {
   const { loginLoading, user, loginError, LoginSuccess, } = useSelector(
       (state) => state.auth
     )
+    console.log(loginError)
 
   const {
         register,
@@ -42,10 +43,13 @@ function Login() {
 
   useEffect(() => {
     document.title = 'Login - Instagram';
+    if(user){
+      navigate('/')
+    }
   }, []);
 
   useEffect(() => {
-    if (!loginLoading && user && LoginSuccess) {
+    if (LoginSuccess) {
         toast.success(`Login Success`, {
             position: 'top-right',
             autoClose: 1000,
@@ -54,12 +58,10 @@ function Login() {
             pauseOnHover: true,
             draggable: true,
             progress: undefined,
-            theme: 'light',
-            rtl: true,
         })
         navigate('/')
     }
-    if (!loginLoading && (loginError)) {
+    if ((loginError)) {
       toast.error(`Invalid username or password`, {
           position: 'top-right',
           autoClose: 1000,
@@ -68,13 +70,14 @@ function Login() {
           pauseOnHover: true,
           draggable: true,
           progress: undefined,
-          theme: 'light',
-          rtl: true,
+         
       })
   }
-}, [loginLoading, loginError, user , LoginSuccess])
+}, [loginError, LoginSuccess])
 
   return (
+    <Fragment>
+      <ToastContainer />
     <div className="grid">
       <div>
         <div className="top-grid -mb-36 p-5 ">
@@ -140,6 +143,7 @@ function Login() {
         </div>
       </div>
     </div>
+    </Fragment>
   );
 }
 
