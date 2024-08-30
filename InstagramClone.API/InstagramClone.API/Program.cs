@@ -51,6 +51,18 @@ namespace InstagramClone.API
                     };
                 });
 
+            // Add CORS services
+            builder.Services.AddCors(options =>
+            {
+                options.AddPolicy("AllowLocalhost",
+                    policy =>
+                    {
+                        policy.WithOrigins("http://localhost:5173")
+                              .AllowAnyMethod()
+                              .AllowAnyHeader();
+                    });
+            });
+
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
@@ -61,6 +73,9 @@ namespace InstagramClone.API
             }
 
             app.UseHttpsRedirection();
+
+            // Use the CORS policy
+            app.UseCors("AllowLocalhost");
 
             app.UseAuthorization();
             app.UseAuthorization();

@@ -95,7 +95,6 @@ namespace Repository
                     bool verified = BCrypt.Net.BCrypt.Verify(model.Password, result.Data.Password);
                     if (verified)
                     {
-                        result.Data.Token = "";
                         result.IsSuccess = true;
                     }
                     else

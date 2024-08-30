@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Models.DTO.Request;
 using Service;
@@ -6,6 +7,8 @@ namespace InstagramClone.API.Controllers
 {
     [ApiController]
     [Route("api/[controller]/[action]")]
+    [EnableCors("AllowLocalhost")]
+
     public class UserController : ControllerBase
     {
         private readonly IUserService _userService;
