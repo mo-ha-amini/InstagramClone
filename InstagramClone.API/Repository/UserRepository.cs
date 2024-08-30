@@ -10,15 +10,11 @@ using Models.DTO.Response;
 
 using Dapper;
 using System.Data;
+using Repository.Interface;
 
 namespace Repository
 {
-    public interface IUserRepository
-    {
-        Task<CustomActionResult> CreateUser(CreateUserRequest model);
-        Task<CustomActionResult<LoginResponse>> GetUserByUsernameAndPassword(LoginRequest model);
-
-    }
+    
 
     public class UserRepository : IUserRepository
     {

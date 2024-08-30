@@ -5,19 +5,15 @@ using Models;
 using Models.DTO.Request;
 using Models.DTO.Response;
 using Models.Entities;
-using Repository;
+using Repository.Interface;
+using Service.Interface;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
 namespace Service
 {
-    public interface IUserService
-    {
-        Task<CustomActionResult> CreateUser(CreateUserRequest model);
-        Task<CustomActionResult<LoginResponse>> LoginUserByUsernameAndPassword(LoginRequest model);
-
-    }
+    
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
