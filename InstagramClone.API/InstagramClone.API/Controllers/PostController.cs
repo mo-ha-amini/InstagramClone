@@ -5,6 +5,7 @@ using Models.DTO.Request;
 using Models.Entities;
 using Service.Interface;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
 
 namespace InstagramClone.API.Controllers
 {
@@ -35,6 +36,14 @@ namespace InstagramClone.API.Controllers
             }
 
             return Ok(await _postService.CreatePost(model));
+        }
+
+        [HttpGet]
+        //[Authorize]
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUserPostById(int id)
+        {
+            return Ok(await _postService.GetPostByUserId(id));
         }
     }
 }

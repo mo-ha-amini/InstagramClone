@@ -8,6 +8,7 @@ using Models.Entities;
 using Repository.Interface;
 using Service.Interface;
 using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
 using System.Security.Claims;
 using System.Text;
 
@@ -34,6 +35,19 @@ namespace Service
             result.IsSuccess = checkCrateUserResult.IsSuccess;
             result.Message = checkCrateUserResult.Message;
             if (!result.IsSuccess) return result;
+
+            return result;
+        }
+
+        public async Task<CustomActionResult<GetProfileByUsernameResponse>> GetUserProfileByUsername(string username)
+        {
+            CustomActionResult<GetProfileByUsernameResponse> result = new CustomActionResult<GetProfileByUsernameResponse>();
+
+            var checkProfileResult = await _userRepository.GetUserProfileByUsername(username);
+
+            result.IsSuccess = checkProfileResult.IsSuccess;
+            result.Message = checkProfileResult.Message;
+            result.Data = checkProfileResult.Data;
 
             return result;
         }

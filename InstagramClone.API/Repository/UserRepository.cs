@@ -11,6 +11,9 @@ using Models.DTO.Response;
 using Dapper;
 using System.Data;
 using Repository.Interface;
+using Models.Entities;
+using System.Reflection;
+using Newtonsoft.Json;
 
 namespace Repository
 {
@@ -66,8 +69,8 @@ namespace Repository
 
         public async Task<CustomActionResult<LoginResponse>> GetUserByUsernameAndPassword(LoginRequest model)
         {
-            CustomActionResult<LoginResponse> result = new CustomActionResult<LoginResponse>();
 
+            CustomActionResult<LoginResponse> result = new CustomActionResult<LoginResponse>();
             try
             {
                 CustomActionResult<IDbConnection> connection = await _databaseConnection.GetConnection();
@@ -82,7 +85,7 @@ namespace Repository
                 //parameters.Add(name: "@password", value: model.Password);
 
                 result.Data = await connection.Data.QueryFirstOrDefaultAsync<LoginResponse>(command, parameters, commandType: System.Data.CommandType.StoredProcedure);
-               
+
 
                 if (result.Data != null)
                 {
@@ -114,5 +117,59 @@ namespace Repository
 
             return result;
         }
+
+        public async Task<CustomActionResult<GetProfileByUsernameResponse>> GetUserProfileByUsername(string username)
+        {
+            CustomActionResult<GetProfileByUsernameResponse> result = new CustomActionResult<GetProfileByUsernameResponse>();
+            try
+            {
+                CustomActionResult<IDbConnection> connection = await _databaseConnection.GetConnection();
+                result.IsSuccess = connection.IsSuccess;
+                result.Message = connection.Message;
+                if (!result.IsSuccess) return result;
+
+                string command = @"prc_get_profile_by_username";
+
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add(name: "@UserName", value: username);
+
+                var profileData = await connection.Data.QueryAsync<dynamic>(command, parameters, commandType: CommandType.StoredProcedure);
+                var user = profileData.FirstOrDefault();
+
+                if (user == null)
+                {
+                    result.IsSuccess = false;
+                    result.Message = "User not found.";
+                    return result;
+                }
+
+                var posts = JsonConvert.DeserializeObject<List<Post>>(user.Posts);
+
+                result.Data = new GetProfileByUsernameResponse
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    Gender = user.Gender,
+                    Username = user.Username,
+                    Name = user.Name,
+                    Bio = user.Bio,
+                    PhoneNumber = user.PhoneNumber,
+                    FollowerCount = user.FollowerCount,
+                    FollowingCount = user.FollowingCount,
+                    Posts = posts
+                };
+
+                result.IsSuccess = true;
+                result.Message = "Profile retrieved successfully.";
+            }
+            catch (Exception ex)
+            {
+                result.IsSuccess = false;
+                result.Message = $"An error occurred: {ex.Message}";
+            }
+
+            return result;
+        }
+
     }
 }

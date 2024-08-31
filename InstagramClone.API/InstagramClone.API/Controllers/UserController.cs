@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Models.DTO.Request;
+using Service;
 using Service.Interface;
 
 namespace InstagramClone.API.Controllers
@@ -29,6 +30,14 @@ namespace InstagramClone.API.Controllers
         public async Task<IActionResult> Login(LoginRequest model)
         {
             return Ok(await _userService.LoginUserByUsernameAndPassword(model));
+        }
+
+        [HttpGet]
+        //[Authorize]
+        [HttpGet("{username}")]
+        public async Task<IActionResult> GetUserProfileByUsername(string username)
+        {
+            return Ok(await _userService.GetUserProfileByUsername(username));
         }
     }
 }

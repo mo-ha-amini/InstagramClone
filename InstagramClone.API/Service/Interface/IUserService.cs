@@ -13,6 +13,8 @@ namespace Service.Interface
     {
         Task<CustomActionResult> CreateUser(CreateUserRequest model);
         Task<CustomActionResult<LoginResponse>> LoginUserByUsernameAndPassword(LoginRequest model);
+        Task<CustomActionResult<GetProfileByUsernameResponse>> GetUserProfileByUsername(string username);
+
 
     }
 }

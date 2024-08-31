@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Models.Entities;
 
 namespace Repository.Interface
 {
@@ -13,6 +14,6 @@ namespace Repository.Interface
     {
         Task<CustomActionResult> CreateUser(CreateUserRequest model);
         Task<CustomActionResult<LoginResponse>> GetUserByUsernameAndPassword(LoginRequest model);
-
+        Task<CustomActionResult<GetProfileByUsernameResponse>> GetUserProfileByUsername(string username);
     }
 }

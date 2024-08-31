@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Dapper;
 using System.Data;
+using Models.Entities;
 
 namespace Repository
 {
@@ -56,5 +57,34 @@ namespace Repository
             }
             return result;
         }
+
+        public async Task<CustomActionResult<List<Post>>> GetPostByUserId(int id)
+        {
+            CustomActionResult<List<Post>> result = new CustomActionResult<List<Post>>();
+            try
+            {
+                CustomActionResult<IDbConnection> connection = await _databaseConnection.GetConnection();
+                result.IsSuccess = connection.IsSuccess;
+                result.Message = connection.Message;
+                if (!result.IsSuccess) return result;
+
+                string command = "prc_get_posts_by_user";
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@UserId", id);
+
+                var posts = await connection.Data.QueryAsync<Post>(command, parameters, commandType: CommandType.StoredProcedure);
+                result.Data = posts.ToList();
+                result.IsSuccess = true;
+                result.Message = "Posts retrieved successfully.";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                result.IsSuccess = false;
+                result.Message = "Failed to retrieve posts.";
+            }
+            return result;
+        }
+    
     }
 }
