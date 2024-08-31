@@ -235,5 +235,63 @@ namespace Repository
             return result;
         }
 
+        public async Task<CustomActionResult<List<getfollowerResponse>>> getFollowingsById(int userId)
+        {
+            CustomActionResult<List<getfollowerResponse>> result = new CustomActionResult<List<getfollowerResponse>>();
+            try
+            {
+                CustomActionResult<IDbConnection> connection = await _databaseConnection.GetConnection();
+                result.IsSuccess = connection.IsSuccess;
+                result.Message = connection.Message;
+                if (!result.IsSuccess) return result;
+
+                string command = @"prc_get_following";
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@UserId", userId);
+
+                var data = await connection.Data.QueryAsync<getfollowerResponse>(command, parameters, commandType: CommandType.StoredProcedure);
+                result.Data = data.ToList();
+                result.IsSuccess = true;
+                result.Message = "Success";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                result.IsSuccess = false;
+                result.Message = "Failed";
+            }
+
+            return result;
+        }
+
+        public async Task<CustomActionResult<List<getfollowerResponse>>> getFollowersById(int userId)
+        {
+
+            CustomActionResult<List<getfollowerResponse>> result = new CustomActionResult<List<getfollowerResponse>>();
+            try
+            {
+                CustomActionResult<IDbConnection> connection = await _databaseConnection.GetConnection();
+                result.IsSuccess = connection.IsSuccess;
+                result.Message = connection.Message;
+                if (!result.IsSuccess) return result;
+
+                string command = @"prc_get_followers";
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@UserId", userId);
+
+                var data = await connection.Data.QueryAsync<getfollowerResponse>(command, parameters, commandType: CommandType.StoredProcedure);
+                result.Data = data.ToList();
+                result.IsSuccess = true;
+                result.Message = " Success";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                result.IsSuccess = false;
+                result.Message = "Failed";
+            }
+
+            return result;
+        }
     }
 }

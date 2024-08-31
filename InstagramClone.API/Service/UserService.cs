@@ -114,5 +114,31 @@ namespace Service
             return result;
 
         }
+
+        public async Task<CustomActionResult<List<getfollowerResponse>>> getFollowingsById(int userId)
+        {
+            CustomActionResult<List<getfollowerResponse>> result = new CustomActionResult<List<getfollowerResponse>>();
+
+            var checkResult = await _userRepository.getFollowingsById(userId);
+
+            result.IsSuccess = checkResult.IsSuccess;
+            result.Message = checkResult.Message;
+            result.Data = checkResult.Data;
+
+            return result;
+        }
+
+        public async Task<CustomActionResult<List<getfollowerResponse>>> getFollowersById(int userId)
+        {
+            CustomActionResult<List<getfollowerResponse>> result = new CustomActionResult<List<getfollowerResponse>>();
+
+            var checkResult = await _userRepository.getFollowersById(userId);
+
+            result.IsSuccess = checkResult.IsSuccess;
+            result.Message = checkResult.Message;
+            result.Data = checkResult.Data;
+
+            return result;
+        }
     }
 }

@@ -16,6 +16,8 @@ namespace Service.Interface
         Task<CustomActionResult<GetProfileByUsernameResponse>> GetUserProfileByUsername(string username);
         Task<CustomActionResult> Follow(int userId, int followingId);
         Task<CustomActionResult> UnFollow(int userId, int followingId);
+        Task<CustomActionResult<List<getfollowerResponse>>> getFollowingsById(int userId);
+        Task<CustomActionResult<List<getfollowerResponse>>> getFollowersById(int userId);
 
     }
 }

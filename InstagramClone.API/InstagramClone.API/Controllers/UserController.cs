@@ -2,6 +2,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Models.DTO.Request;
+using Models.Entities;
 using Service;
 using Service.Interface;
 using System.IdentityModel.Tokens.Jwt;
@@ -81,6 +82,20 @@ namespace InstagramClone.API.Controllers
             {
                 return BadRequest();
             }
+        }
+
+        [HttpPost]
+        //[Authorize]
+        public async Task<IActionResult> GetFollowers(int UserId)
+        {   
+            return Ok(await _userService.getFollowersById(UserId));
+        }
+
+        [HttpPost]
+        //[Authorize]
+        public async Task<IActionResult> GetFollowings(int UserId)
+        {
+            return Ok(await _userService.getFollowingsById(UserId));
         }
     }
 }
