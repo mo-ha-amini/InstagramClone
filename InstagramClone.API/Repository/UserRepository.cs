@@ -143,7 +143,7 @@ namespace Repository
                     return result;
                 }
 
-                var posts = JsonConvert.DeserializeObject<List<Post>>(user.Posts);
+                var posts = user.Posts != null ? JsonConvert.DeserializeObject<List<Post>>(user.Posts) : new List<Post>();
 
                 result.Data = new GetProfileByUsernameResponse
                 {

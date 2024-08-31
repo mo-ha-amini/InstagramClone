@@ -40,13 +40,14 @@ function Header({ photosCount, profile}) {
   //     isLoggedInUserFollowingProfile();
   //   }
   // }, [user.username, profile.userId]);
-  // const handleToggleFollow = async () => {
-  //   setIsFollowingProfile((isFollowingProfile) => !isFollowingProfile);
-  //   setFollowerCount({
-  //     followerCount: isFollowingProfile ? followerCount - 1 : followerCount + 1
-  //   });
-  //   await toggleFollow(isFollowingProfile, user.id, profile.id, profile.userId, user.userId);
-  // };
+
+  const handleToggleFollow = async () => {
+    setIsFollowingProfile((isFollowingProfile) => !isFollowingProfile);
+    // setFollowerCount({
+    //   followerCount: isFollowingProfile ? followerCount - 1 : followerCount + 1
+    // });
+    // await toggleFollow(isFollowingProfile, user.id, profile.id, profile.userId, user.userId);
+  };
   return !profile ? (
     <HeadLoader />
   ) : (
