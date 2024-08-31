@@ -23,10 +23,6 @@ function Header() {
   const [open, setOpen] = useRecoilState(postModalState);
   const [isOpen, setIsOpen] = useRecoilState(searchBarModalState);
 
-  const {
-    user: { username, image, userId, following }
-  } = useUser();
-
   return (
     <div className="fixed top-0 z-50 w-screen border-b bg-white shadow-sm">
       <div className="mx-auto flex max-w-7xl items-center justify-evenly">
@@ -58,14 +54,14 @@ function Header() {
           {user ? (
             <>
               <div className="relative">
-                <Link to={`/messages/${userId}`}>
+                <Link to={`/messages/${user.id}`}>
                   <PaperAirplaneIcon className="navButton mb-[6px] rotate-50" />
                 </Link>
-                {following && (
+                {/* {following && (
                   <div className="absolute -top-1 -right-1 h-5 w-5 animate-pulse rounded-full bg-red-500 text-center text-sm text-white">
                     {following.length}
                   </div>
-                )}
+                )} */}
               </div>
               <PlusCircleIcon onClick={() => setOpen(true)} className="navButton" />
               {/* <Link to={ROUTES.LOGIN}> */}
@@ -87,10 +83,10 @@ function Header() {
                 </button>
               {/* </Link> */}
               <div className="items-center">
-                <Link to={`/profile/${username}`}>
+                <Link to={`/profile/${user.username}`}>
                   <img
-                    src={image}
-                    alt={username}
+                    src={''}
+                    alt={user.username}
                     className="mt-1 aspect-square h-10 w-10 rounded-full border-2 border-gray-200 object-cover p-[1px]"
                   />
                 </Link>

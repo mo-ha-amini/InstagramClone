@@ -20,9 +20,10 @@ import { isUserFollowingProfile, toggleFollow } from '../../services/firebase';
 import { userIdState } from '../../atoms/idAtom';
 import SuggestionsList from './SuggestionsList';
 import { HeadLoader } from './Loader';
+import { useSelector } from 'react-redux';
 
-function Header({ photosCount, profile, followerCount, followingCount, setFollowerCount }) {
-  const { user } = useUser();
+function Header({ photosCount, profile}) {
+  const {user} = useSelector((state) => state.auth)
   const activeButtonFollow = user.username && user.username !== profile.username;
   const [open, setOpen] = useRecoilState(userEditModal);
   const [isopen, setIsOpen] = useRecoilState(followersModalState);
@@ -30,23 +31,23 @@ function Header({ photosCount, profile, followerCount, followingCount, setFollow
   const [keepOpen, setKeepOpen] = useRecoilState(suggestionsListState);
   const [userId, setUserId] = useRecoilState(userIdState);
   const [isFollowingProfile, setIsFollowingProfile] = useState(false);
-  useEffect(() => {
-    const isLoggedInUserFollowingProfile = async () => {
-      const isFollowing = await isUserFollowingProfile(user.username, profile.userId);
-      setIsFollowingProfile(!!isFollowing);
-    };
-    if (user.username && profile.userId) {
-      isLoggedInUserFollowingProfile();
-    }
-  }, [user.username, profile.userId]);
-  const handleToggleFollow = async () => {
-    setIsFollowingProfile((isFollowingProfile) => !isFollowingProfile);
-    setFollowerCount({
-      followerCount: isFollowingProfile ? followerCount - 1 : followerCount + 1
-    });
-    await toggleFollow(isFollowingProfile, user.id, profile.id, profile.userId, user.userId);
-  };
-  return !profile.image ? (
+  // useEffect(() => {
+  //   const isLoggedInUserFollowingProfile = async () => {
+  //     const isFollowing = await isUserFollowingProfile(user.username, profile.userId);
+  //     setIsFollowingProfile(!!isFollowing);
+  //   };
+  //   if (user.username && profile.userId) {
+  //     isLoggedInUserFollowingProfile();
+  //   }
+  // }, [user.username, profile.userId]);
+  // const handleToggleFollow = async () => {
+  //   setIsFollowingProfile((isFollowingProfile) => !isFollowingProfile);
+  //   setFollowerCount({
+  //     followerCount: isFollowingProfile ? followerCount - 1 : followerCount + 1
+  //   });
+  //   await toggleFollow(isFollowingProfile, user.id, profile.id, profile.userId, user.userId);
+  // };
+  return !profile ? (
     <HeadLoader />
   ) : (
     <div className="flex flex-col space-y-1 py-2">
@@ -110,7 +111,7 @@ function Header({ photosCount, profile, followerCount, followingCount, setFollow
             </p>
           </div>
           <div className="hidden flex-col space-y-2 md:inline-flex ">
-            <p className="text-xl font-semibold ">{profile.fullName}</p>
+            <p className="text-xl font-semibold ">{profile.name}</p>
             <p className="whitespace-pre-line pb-2 text-sm">{profile.bio}</p>
             <div className="flex max-w-sm justify-between text-base text-gray-400">
               <p>
@@ -123,8 +124,8 @@ function Header({ photosCount, profile, followerCount, followingCount, setFollow
                   setIsOpen(true), setUserId(profile.id);
                 }}
               >
-                <span className="text-xl font-semibold text-black">{followerCount}</span>{' '}
-                {followerCount === 1 ? `Follower` : `Followers`}
+                <span className="text-xl font-semibold text-black">{profile.followerCount}</span>{' '}
+                {profile.followerCount === 1 ? `Follower` : `Followers`}
               </p>
               <p
                 className=" cursor-pointer"
@@ -132,18 +133,18 @@ function Header({ photosCount, profile, followerCount, followingCount, setFollow
                   setNowOpen(true), setUserId(profile.id);
                 }}
               >
-                <span className="text-xl font-semibold text-black">{followingCount}</span> Following
+                <span className="text-xl font-semibold text-black">{profile.followingCount}</span> Following
               </p>
             </div>
           </div>
         </div>
       </div>
       <div className="hidden md:flex">
-        <SuggestionsList
+        {/* <SuggestionsList
           userId={user.userId}
           following={user.following}
           loggedInUserDocId={user.id}
-        />
+        /> */}
       </div>
       <div className="hidden justify-between border-y px-20 pb-1 text-center text-lg font-semibold text-gray-700 md:inline-flex">
         <p className="-mb-1 flex w-16 cursor-pointer flex-col items-center py-1 transition ease-in-out hover:border-t-2 hover:border-gray-700">
@@ -159,11 +160,11 @@ function Header({ photosCount, profile, followerCount, followingCount, setFollow
       <div className=" mx-6 space-y-2 md:hidden">
         <p className="-ml-2  font-semibold">{profile.fullName}</p>
         <p className=" -ml-2 whitespace-pre-line pb-2 text-sm">{profile.bio}</p>
-        <SuggestionsList
+        {/* <SuggestionsList
           userId={user.userId}
           following={user.following}
           loggedInUserDocId={user.id}
-        />
+        /> */}
         <div className="-mx-6 flex justify-between border-y px-10 py-2 text-center text-sm font-semibold text-gray-400">
           <p className="flex flex-col">
             <span className="-mb-1 text-lg font-bold text-black">{photosCount}</span>
@@ -175,8 +176,8 @@ function Header({ photosCount, profile, followerCount, followingCount, setFollow
               setIsOpen(true), setUserId(profile.id);
             }}
           >
-            <span className="-mb-1 text-lg font-bold text-black">{followerCount}</span>
-            {followerCount === 1 ? `Follower` : `Followers`}
+            <span className="-mb-1 text-lg font-bold text-black">{profile.followerCount}</span>
+            {profile.followerCount === 1 ? `Follower` : `Followers`}
           </p>
           <p
             className="flex cursor-pointer flex-col"
@@ -184,29 +185,31 @@ function Header({ photosCount, profile, followerCount, followingCount, setFollow
               setNowOpen(true), setUserId(profile.id);
             }}
           >
-            <span className="-mb-1 text-lg font-bold text-black">{followingCount}</span>
+            <span className="-mb-1 text-lg font-bold text-black">{profile.followingCount}</span>
             Following
           </p>
         </div>
       </div>
     </div>
   );
+
+  return(<div>hi</div>)
 }
 
 export default Header;
 
-Header.propTypes = {
-  photosCount: PropTypes.number.isRequired,
-  followerCount: PropTypes.number.isRequired,
-  followingCount: PropTypes.number.isRequired,
-  setFollowerCount: PropTypes.func.isRequired,
-  profile: PropTypes.shape({
-    id: PropTypes.string,
-    userId: PropTypes.string,
-    username: PropTypes.string,
-    image: PropTypes.string,
-    bio: PropTypes.string,
-    fullName: PropTypes.string,
-    following: PropTypes.array
-  }).isRequired
-};
+// Header.propTypes = {
+//   photosCount: PropTypes.number.isRequired,
+//   followerCount: PropTypes.number.isRequired,
+//   followingCount: PropTypes.number.isRequired,
+//   setFollowerCount: PropTypes.func.isRequired,
+//   profile: PropTypes.shape({
+//     id: PropTypes.string,
+//     userId: PropTypes.string,
+//     username: PropTypes.string,
+//     image: PropTypes.string,
+//     bio: PropTypes.string,
+//     fullName: PropTypes.string,
+//     following: PropTypes.array
+//   }).isRequired
+// };

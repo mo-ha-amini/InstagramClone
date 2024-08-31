@@ -1,16 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import Photo from './Photo';
+import Post from './Post';
 
-function Photos({ photos }) {
-  return photos.length > 0 ? (
+function Posts({ posts }) {
+  console.log(posts)
+  return posts.length > 0 ? (
     <div className="grid h-0 grid-cols-3 justify-center gap-1 ">
-      {photos.map((photo) => (
+      {posts.map((post) => (
         <div
-          key={photo.id}
+          key={post.id}
           className="group relative h-0 w-auto cursor-pointer overflow-hidden py-[75%] px-0 pt-0"
         >
-          <Photo image={photo.imageSrc} photoId={photo.id} likes={photo.likes.length} />
+          <Post image={post.media} photoId={post.id} likes={post.likes ? post.likes.length : 0} comments={post.comments ? post.comments.length : 0} />
         </div>
       ))}
     </div>
@@ -19,8 +20,5 @@ function Photos({ photos }) {
   );
 }
 
-export default Photos;
+export default Posts;
 
-Photos.propTypes = {
-  photos: PropTypes.array.isRequired
-};

@@ -14,7 +14,7 @@ import SearchBarModal from '../components/Modals/SearchBarModal';
 
 function Dashboard() {
   useEffect(() => {
-    document.title = 'Instagram 2.0 Clone';
+    document.title = 'Instagram Clone';
   }, []);
   const { user } = useContext(UserContext);
   return (

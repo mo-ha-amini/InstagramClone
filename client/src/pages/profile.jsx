@@ -13,23 +13,19 @@ import TopScroll from '../components/TopScroll';
 import SearchBarModal from '../components/Modals/SearchBarModal';
 import PhotoDisplayModal from '../components/Modals/PhotoDisplayModal';
 import PostModal from '../components/Modals/PostModal';
+import { useDispatch, useSelector } from 'react-redux';
+import {getProfile} from '../features/profile/profileActions'
 
 function Profile() {
   // fetch username from url params
   const { username } = useParams();
+  const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [user, setUser] = useState(null);
+  const {Loading, profile, Error, Success} = useSelector((state) => state.profile)
+
   useEffect(() => {
-    async function checkUserExists() {
-      const user = await getUserByUsername(username);
-      if (user.length > 0) {
-        setUser(user[0]);
-      } else {
-        navigate(ROUTES.NOT_FOUND);
-      }
-    }
-    checkUserExists();
-  }, [username, navigate]);
+    dispatch(getProfile({username}))
+   } ,[username]);
   return (
     <div>
       <SearchBarModal />
@@ -42,7 +38,7 @@ function Profile() {
       <TopScroll />
       <Header />
       <div className="mx-auto mt-20 -mb-6 h-full min-h-screen overflow-x-hidden pb-4 scrollbar-hide sm:max-w-xl md:max-w-2xl lg:max-w-[52rem] xl:max-w-4xl">
-        {user ? <UserProfile user={user} /> : <Loader />}
+        {profile ? <UserProfile profile={profile} /> : <Loader />}
       </div>
     </div>
   );

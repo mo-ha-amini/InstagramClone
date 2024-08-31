@@ -6,18 +6,10 @@ import { useRecoilState } from 'recoil';
 import { photoDisplayModalState } from '../../atoms/modalAtom';
 import { photoIdState } from '../../atoms/idAtom';
 
-function Photo({ image, photoId, likes }) {
-  const [comments, setComments] = useState(0);
+function Photo({ image, photoId, likes, comments }) {
   const [open, setOpen] = useRecoilState(photoDisplayModalState);
   const [id, setId] = useRecoilState(photoIdState);
-  useEffect(() => {
-    const commentsLength = async () => {
-      const length = await getCommentsLength(photoId);
-      setComments(length);
-    };
-    if (photoId) commentsLength();
-  }, [photoId]);
-
+  const imageSrc = `data:image/jpeg;base64,${image}`;
   return (
     <div
       onClick={() => {
@@ -26,7 +18,7 @@ function Photo({ image, photoId, likes }) {
       }}
     >
       <img
-        src={image}
+        src={imageSrc}
         alt="Posted Image"
         className="aspect-square h-40 min-h-full border object-cover object-center xxs:h-32 xs:h-36 sm:h-40 md:h-44 lg:h-48 "
       />
@@ -45,9 +37,3 @@ function Photo({ image, photoId, likes }) {
 }
 
 export default Photo;
-
-Photo.propTypes = {
-  image: PropTypes.string.isRequired,
-  photoId: PropTypes.string.isRequired,
-  likes: PropTypes.number.isRequired
-};
