@@ -1,8 +1,11 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Models.DTO.Request;
 using Service;
 using Service.Interface;
+using System.IdentityModel.Tokens.Jwt;
+using System.Reflection;
 
 namespace InstagramClone.API.Controllers
 {
@@ -38,6 +41,46 @@ namespace InstagramClone.API.Controllers
         public async Task<IActionResult> GetUserProfileByUsername(string username)
         {
             return Ok(await _userService.GetUserProfileByUsername(username));
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> Follow(int followingId)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "UserId");
+            if (userIdClaim != null)
+            {
+                var UserId = int.Parse(userIdClaim.Value);
+                return Ok(await _userService.Follow(UserId, followingId));
+            }
+            else
+            {
+                return BadRequest();
+            }
+        }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<IActionResult> UnFollow(int followingId)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "UserId");
+            if (userIdClaim != null)
+            {
+                var UserId = int.Parse(userIdClaim.Value);
+                return Ok(await _userService.UnFollow(UserId, followingId));
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }

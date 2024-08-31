@@ -34,7 +34,30 @@ namespace Service
             var checkCrateUserResult = await _userRepository.CreateUser(model);
             result.IsSuccess = checkCrateUserResult.IsSuccess;
             result.Message = checkCrateUserResult.Message;
-            if (!result.IsSuccess) return result;
+
+            return result;
+        }
+
+        public async Task<CustomActionResult> Follow(int userId, int followingId)
+        {
+
+            CustomActionResult result = new CustomActionResult();
+
+            var checkFollowResult = await _userRepository.Follow(userId, followingId);
+            result.IsSuccess = checkFollowResult.IsSuccess;
+            result.Message = checkFollowResult.Message;
+
+            return result;
+        }
+
+        public async Task<CustomActionResult> UnFollow(int userId, int followingId)
+        {
+
+            CustomActionResult result = new CustomActionResult();
+
+            var checkUnFollowResult = await _userRepository.UnFollow(userId, followingId);
+            result.IsSuccess = checkUnFollowResult.IsSuccess;
+            result.Message = checkUnFollowResult.Message;
 
             return result;
         }

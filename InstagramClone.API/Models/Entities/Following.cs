@@ -10,7 +10,8 @@ namespace Models.Entities
     public class Following
     {
         public int Id { get; set; }
-        public int UserID { get; set; }
+        public int FollowingUserId { get; set; }
+        public int UserId { get; set; }
         public DateTime DateFollowed { get; set; }
         [JsonIgnore]
         public User User { get; set; }

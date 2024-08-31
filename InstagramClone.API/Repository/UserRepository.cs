@@ -171,5 +171,69 @@ namespace Repository
             return result;
         }
 
+        public async Task<CustomActionResult> Follow(int userId, int followingId)
+        {
+            CustomActionResult result = new CustomActionResult();
+
+            try
+            {
+                CustomActionResult<IDbConnection> connection = await _databaseConnection.GetConnection();
+                result.IsSuccess = connection.IsSuccess;
+                result.Message = connection.Message;
+
+                if (!result.IsSuccess) return result;
+
+                string command = @"Prc_follow_user";
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@UserId", userId);
+                parameters.Add("@FollowingId", followingId);
+
+                await connection.Data.ExecuteAsync(command, parameters, commandType: CommandType.StoredProcedure);
+
+                result.IsSuccess = true;
+                result.Message = "Follow Success";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                result.IsSuccess = false;
+                result.Message = "Failed to follow User";
+            }
+
+            return result;
+        }
+
+        public async Task<CustomActionResult> UnFollow(int userId, int followingId)
+        {
+            CustomActionResult result = new CustomActionResult();
+
+            try
+            {
+                CustomActionResult<IDbConnection> connection = await _databaseConnection.GetConnection();
+                result.IsSuccess = connection.IsSuccess;
+                result.Message = connection.Message;
+
+                if (!result.IsSuccess) return result;
+
+                string command = @"prc_unfollow_user";
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@UserId", userId);
+                parameters.Add("@FollowingId", followingId);
+
+                await connection.Data.ExecuteAsync(command, parameters, commandType: CommandType.StoredProcedure);
+
+                result.IsSuccess = true;
+                result.Message = "UnFollow Success";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                result.IsSuccess = false;
+                result.Message = "Failed to unfollow User";
+            }
+
+            return result;
+        }
+
     }
 }

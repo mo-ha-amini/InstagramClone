@@ -14,7 +14,8 @@ namespace Service.Interface
         Task<CustomActionResult> CreateUser(CreateUserRequest model);
         Task<CustomActionResult<LoginResponse>> LoginUserByUsernameAndPassword(LoginRequest model);
         Task<CustomActionResult<GetProfileByUsernameResponse>> GetUserProfileByUsername(string username);
-
+        Task<CustomActionResult> Follow(int userId, int followingId);
+        Task<CustomActionResult> UnFollow(int userId, int followingId);
 
     }
 }
