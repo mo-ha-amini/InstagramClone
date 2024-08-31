@@ -11,6 +11,5 @@ namespace Repository.Interface
     public interface IPostRepository
     {
         Task<CustomActionResult> CreatePost(CreatePostRequest model);
-
     }
 }

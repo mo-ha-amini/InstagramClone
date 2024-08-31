@@ -10,7 +10,6 @@ namespace Models.DTO.Request
 {
     public class CreatePostRequest
     {
-        [Required]
         public int UserId { get; set; }
 
         [Required]
