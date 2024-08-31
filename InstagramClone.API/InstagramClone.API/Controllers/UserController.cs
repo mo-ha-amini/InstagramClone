@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Models.DTO.Request;
-using Service;
+using Service.Interface;
 
 namespace InstagramClone.API.Controllers
 {

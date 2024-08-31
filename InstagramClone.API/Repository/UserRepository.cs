@@ -14,8 +14,6 @@ using Repository.Interface;
 
 namespace Repository
 {
-    
-
     public class UserRepository : IUserRepository
     {
         private readonly IDatabaseConnection _databaseConnection;
@@ -37,7 +35,7 @@ namespace Repository
 
                 if(!result.IsSuccess) return result;
 
-                string command = @"pkg_user.create_user";
+                string command = @"CreateUser";
                 DynamicParameters parameters = new DynamicParameters();
                 //parameters.Add("@Id", model.Id);
                 parameters.Add("@Email", model.Email);
@@ -48,7 +46,7 @@ namespace Repository
                 parameters.Add("@Bio", model.Bio);
                 parameters.Add("@PhoneNumber", model.PhoneNumber);
 
-                await connection.Data.ExecuteAsync("CreateUser", parameters, commandType: CommandType.StoredProcedure);
+                await connection.Data.ExecuteAsync(command, parameters, commandType: CommandType.StoredProcedure);
             
 
 

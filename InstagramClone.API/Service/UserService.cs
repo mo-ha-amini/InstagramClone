@@ -34,7 +34,7 @@ namespace Service
             result.IsSuccess = checkCrateUserResult.IsSuccess;
             result.Message = checkCrateUserResult.Message;
             if (!result.IsSuccess) return result;
-            //throw new NotImplementedException();
+
             return result;
         }
 
