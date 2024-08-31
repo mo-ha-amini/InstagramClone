@@ -14,6 +14,9 @@ namespace Models.Entities
         public int UserId { get; set; }
         public string Caption { get; set; }
         public byte[] Media { get; set; }
-        
+        public IList<Like> Likes { get; set; } = new List<Like>();
+        public IList<Comment> Comments { get; set; } = new List<Comment>();
+        [JsonIgnore]
+        public User User { get; set; }
     }
 }
