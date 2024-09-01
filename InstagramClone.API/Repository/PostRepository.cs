@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using Dapper;
 using System.Data;
 using Models.Entities;
+using Models.DTO.Response;
+using Newtonsoft.Json;
 
 namespace Repository
 {
@@ -54,6 +56,40 @@ namespace Repository
                 Console.WriteLine(ex.Message);
                 result.IsSuccess = false;
                 result.Message = "create Post failed";
+            }
+            return result;
+        }
+
+        public async Task<CustomActionResult<List<getFeedPostResponse>>> GetFeedPosts(int userId)
+        {
+            CustomActionResult<List<getFeedPostResponse>> result = new CustomActionResult<List<getFeedPostResponse>>();
+            try
+            {
+                CustomActionResult<IDbConnection> connection = await _databaseConnection.GetConnection();
+                result.IsSuccess = connection.IsSuccess;
+                result.Message = connection.Message;
+                if (!result.IsSuccess) return result;
+
+                string command = "prc_get_feed_posts";
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@UserId", userId);
+
+                var posts = await connection.Data.QueryAsync<getFeedPostResponse>(command, parameters, commandType: CommandType.StoredProcedure);
+                foreach (var post in posts)
+                {
+                    post.Likes = post.LikesJson != null ? JsonConvert.DeserializeObject<List<Like>>(post.LikesJson) : new List<Like>();
+                    post.Comments = post.CommentsJson != null ? JsonConvert.DeserializeObject<List<Comment>>(post.CommentsJson) : new List<Comment>();
+                }
+
+                result.Data = posts.ToList();
+                result.IsSuccess = true;
+                result.Message = "Feed Posts retrieved successfully.";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                result.IsSuccess = false;
+                result.Message = "Failed to retrieve Feed posts.";
             }
             return result;
         }

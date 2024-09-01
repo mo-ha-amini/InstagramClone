@@ -19,5 +19,6 @@ namespace Service.Interface
         Task<CustomActionResult<List<getfollowerResponse>>> getFollowingsById(int userId);
         Task<CustomActionResult<List<getfollowerResponse>>> getFollowersById(int userId);
 
+
     }
 }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Models.DTO.Request;
 using Models.Entities;
+using Service;
 using Service.Interface;
 using System.IdentityModel.Tokens.Jwt;
 using System.Reflection;
@@ -44,6 +45,26 @@ namespace InstagramClone.API.Controllers
         public async Task<IActionResult> GetUserPostById(int id)
         {
             return Ok(await _postService.GetPostByUserId(id));
+        }
+
+        [Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetFeedPosts()
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "UserId");
+            if (userIdClaim != null)
+            {
+                var UserId = int.Parse(userIdClaim.Value);
+                return Ok(await _postService.GetFeedPosts(UserId));
+            }
+            else
+            {
+                return BadRequest();
+            }
         }
     }
 }

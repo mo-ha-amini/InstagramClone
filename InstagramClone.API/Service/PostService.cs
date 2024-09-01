@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Models;
 using Models.DTO.Request;
+using Models.DTO.Response;
 using Models.Entities;
 using Repository;
 using Repository.Interface;
@@ -31,6 +32,18 @@ namespace Service
             result.IsSuccess = checkCratePostResult.IsSuccess;
             result.Message = checkCratePostResult.Message;
             if (!result.IsSuccess) return result;
+
+            return result;
+        }
+
+        public async Task<CustomActionResult<List<getFeedPostResponse>>> GetFeedPosts(int userId)
+        {
+            CustomActionResult<List<getFeedPostResponse>> result = new CustomActionResult<List<getFeedPostResponse>>();
+
+            var checkPostResult = await _postRepository.GetFeedPosts(userId);
+            result.IsSuccess = checkPostResult.IsSuccess;
+            result.Message = checkPostResult.Message;
+            result.Data = checkPostResult.Data;
 
             return result;
         }
