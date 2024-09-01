@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import Post from './Post';
 
 function Posts({ posts }) {
-  console.log(posts)
+  // console.log(posts)
   return posts.length > 0 ? (
     <div className="grid h-0 grid-cols-3 justify-center gap-1 ">
       {posts.map((post) => (

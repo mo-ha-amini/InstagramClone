@@ -24,7 +24,7 @@ export const getfollowings = createAsyncThunk(
                 `${backendURL}/api/User/GetFollowings?UserId=${userId}`,
                 config
             )
-            console.log(data)
+            // console.log(data)
             return data
         } catch (error) {
             if (error.response && error.response.data) {

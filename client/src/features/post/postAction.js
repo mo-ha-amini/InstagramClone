@@ -33,3 +33,34 @@ export const getUserPosts = createAsyncThunk(
         }
     }
 )
+
+export const createPosts = createAsyncThunk(
+    'post/createPosts',
+    async ({ Caption, MediaFile }, { rejectWithValue }) => {
+        try {
+            const formData = new FormData();
+            formData.append('Caption', Caption);
+            formData.append('MediaFile', MediaFile);
+
+            const config = {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                    'Authorization': 'Bearer ' + String(getToken()),
+                },
+            };
+
+            const { data } = await axios.post(
+                `${backendURL}/api/Post/CreatePost`,
+                formData,
+                config
+            );
+            return data;
+        } catch (error) {
+            if (error.response && error.response.data) {
+                return rejectWithValue(error.response.data);
+            } else {
+                return rejectWithValue(error.message);
+            }
+        }
+    }
+);

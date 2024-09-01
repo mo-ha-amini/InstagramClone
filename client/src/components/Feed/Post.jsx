@@ -11,7 +11,7 @@ function Post({ content }) {
   const commentInput = useRef(null);
   const [toggledLiked, setToggledLiked] = useState(content.userLikedPhoto);
   const [likes, setLikes] = useState(content.likes?.length);
-  console.log(content)
+  // console.log(content)
   return (
     <div className="container my-5 divide-y rounded-md border bg-white shadow-md">
       <Header id={content.id} username={content.username} userImage={content.userImage} />

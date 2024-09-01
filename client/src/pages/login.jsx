@@ -26,7 +26,7 @@ function Login() {
   const { loginLoading, user, loginError, LoginSuccess, } = useSelector(
       (state) => state.auth
     )
-    console.log(loginError)
+    // console.log(loginError)
 
   const {
         register,

@@ -5,27 +5,36 @@ import { Dialog, Transition } from '@headlessui/react';
 import { CameraIcon, CloudUploadIcon, TrashIcon, XIcon } from '@heroicons/react/outline';
 import useUser from '../../hooks/use-user';
 import { addPostsToFirestore } from '../../services/firebase';
+import { useDispatch, useSelector } from 'react-redux';
+import {createPosts} from '../../features/post/postAction'
 
 function PostModal() {
+  const dispatch = useDispatch()
+  const {Loading, createPostError, createPostSuccess} = useSelector((state)=> state.post)
   const [open, setOpen] = useRecoilState(postModalState);
   const filePickerRef = useRef(null);
   const captionRef = useRef(null);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
   const [selectedFile, setSelectedFile] = useState(null);
-  const {
-    user: { username, image, userId }
-  } = useUser();
+  // const {
+  //   user: { username, image, userId }
+  // } = useUser();
   // to push the post to firebase
   const uploadPost = async () => {
-    if (loading) return;
-    setLoading(true);
+    if (Loading) return;
     const caption = captionRef.current.value;
-    await addPostsToFirestore(userId, username, image, caption, selectedFile);
+    const fileInput = document.querySelector('input[type="file"]');
+    const selectedFile = fileInput.files[0];
+
+    if (!selectedFile) {
+        console.error('No file selected');
+        return;
+    }
+
+    dispatch(createPosts({ Caption: caption, MediaFile: selectedFile }));
     setOpen(false);
-    setLoading(false);
     setSelectedFile(null);
-    document.location.reload();
-  };
+};
   // to display the image to be posted in the modal
   const addImageToPost = (event) => {
     const reader = new FileReader();
@@ -68,7 +77,7 @@ function PostModal() {
               <button
                 className="float-right outline-none"
                 onClick={() => {
-                  setOpen(false), setLoading(false), setSelectedFile(null);
+                  setOpen(false), setSelectedFile(null);
                 }}
               >
                 <XIcon className=" h-6  w-6 cursor-pointer text-gray-300" />
@@ -141,7 +150,7 @@ function PostModal() {
                     type="button"
                     disabled={!selectedFile}
                   >
-                    {loading ? 'Uploading...' : 'Upload Post'}
+                    {Loading ? 'Uploading...' : 'Upload Post'}
                   </button>
                 </div>
               </div>
