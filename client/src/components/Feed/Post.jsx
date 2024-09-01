@@ -1,22 +1,39 @@
 import PropTypes from 'prop-types';
-import React, { useRef, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import Header from './Header';
 import Image from './Image';
 import Buttons from './Buttons';
 import Captions from './Captions';
 import Comments from './Comments';
+import { useSelector } from 'react-redux';
 
 function Post({ content }) {
+  const {user} = useSelector((state)=> state.auth)
   const handleFocus = () => commentInput.current.focus();
   const commentInput = useRef(null);
-  const [toggledLiked, setToggledLiked] = useState(content.userLikedPhoto);
+  const [toggledLiked, setToggledLiked] = useState(false);
   const [likes, setLikes] = useState(content.likes?.length);
-  // console.log(content)
+  console.log(content)
+  const imageSrc = `data:image/jpeg;base64,${content.media}`;
+
+  const checklike = ( userId, likes) => {
+    likes.forEach(like => {
+        if(like.userId == userId){
+          setToggledLiked(true)
+          return;
+        }
+      });
+  }
+
+  useEffect(()=>{
+    checklike(user.id , content.likes)
+  },[user])
+
   return (
     <div className="container my-5 divide-y rounded-md border bg-white shadow-md">
       <Header id={content.id} username={content.username} userImage={content.userImage} />
       <Image
-        src={content.imageSrc}
+        src={imageSrc}
         caption={content.caption}
         id={content.id}
         toggledLiked={toggledLiked}
@@ -36,7 +53,7 @@ function Post({ content }) {
         <Captions caption={content.caption} username={content.username} />
       </div>
       <div>
-        <Comments id={content.id} postedAt={content.timestamp} commentInput={commentInput} />
+        {/* <Comments id={content.id} postedAt={content.timestamp} commentInput={commentInput} /> */}
       </div>
     </div>
   );

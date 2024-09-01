@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getUserPosts, createPosts } from './postAction'
+import { getUserPosts, createPosts, getFeedPosts } from './postAction'
 
 const initialState = {
     Loading: false,
@@ -9,6 +9,10 @@ const initialState = {
 
     createPostError: null,
     createPostSuccess: false,
+
+    FeedPosts: null,
+    getFeedPostError: null,
+    getFeedPostSuccess: false,
     
 }
 
@@ -47,6 +51,22 @@ const postSlice = createSlice({
                 state.Loading = false;
                 state.createPostError = action.payload.message;
                 state.createPostSuccess = false;
+              })
+
+              .addCase(getFeedPosts.pending, (state) => {
+                state.Loading = true;
+                state.getFeedPostSuccess = false;
+              })
+              .addCase(getFeedPosts.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.FeedPosts = action.payload.data;
+                state.getFeedPostSuccess = action.payload.isSuccess;
+                state.getFeedPostError = action.payload.message;
+              })
+              .addCase(getFeedPosts.rejected, (state, action) => {
+                state.Loading = false;
+                state.getFeedPostError = action.payload.message;
+                state.getFeedPostSuccess = false;
               })
             }
 })

@@ -1,22 +1,31 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import usePhotos from '../../hooks/use-photos';
 import Suggestions from '../Sidebar/Suggestions';
 import useUser from '../../hooks/use-user';
 import Post from './Post';
 import Stories from './Stories';
 import Loader from './Loader';
+import { useDispatch, useSelector } from 'react-redux';
+import { getFeedPosts} from '../../features/post/postAction'
 
 function Feed() {
+  const dispatch = useDispatch()
+  const {Loading, FeedPosts, getFeedPostError, getFeedPostSuccess} = useSelector((state)=> state.post)
   const {
     user: { id, userId, following }
   } = useUser();
-  const { photos } = usePhotos({ userId });
-  return !photos ? (
+
+  useEffect(()=>{
+    dispatch(getFeedPosts({}))
+  }, [])
+
+  console.log(FeedPosts)
+  return !FeedPosts ? (
     <Loader />
-  ) : photos?.length > 0 ? (
+  ) : FeedPosts?.length > 0 ? (
     <>
-      <Stories activeUserId={userId} following={following} />
-      {photos.map((content) => (
+      {/* <Stories activeUserId={userId} following={following} /> */}
+      {FeedPosts.map((content) => (
         <div className="" key={content.id}>
           <Post key={content.id} content={content} />
         </div>

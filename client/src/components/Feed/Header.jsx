@@ -13,8 +13,8 @@ function Header({ id, username, userImage }) {
   const {user} = useSelector((state) => state.auth)
 
   const deletePhoto = async () => {
-    await deletePost(id);
-    document.location.reload();
+    // await deletePost(id);
+    // document.location.reload();
   };
   // const {
   //   user: { username: activeUsername, userId }
@@ -22,11 +22,11 @@ function Header({ id, username, userImage }) {
   return (
     <div className="flex items-center p-3">
       <img
-        src={userImage}
+        src={userImage ? userImage : '/images/default.png'}
         alt={username}
         className="mr-3 aspect-square h-14 w-14 rounded-full border-2 border-gray-300 object-cover p-[2px] text-center"
       />
-      <Link to={`/profile/${user.username}`} className="flex-1 font-semibold text-gray-800">
+      <Link to={`/profile/${username}`} className="flex-1 font-semibold text-gray-800">
         <p>{username}</p>
       </Link>
       <Menu as="div" className="relative inline-block text-left">
@@ -36,7 +36,7 @@ function Header({ id, username, userImage }) {
             aria-hidden="true"
           />
         </Menu.Button>
-        {activeUsername === username && (
+        {user.username== username && (
           <Transition
             as={Fragment}
             enter="transition ease-in-out duration-100"

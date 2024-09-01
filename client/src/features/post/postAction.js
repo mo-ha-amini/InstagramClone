@@ -10,7 +10,7 @@ export const getToken = () => {
 }
 
 export const getUserPosts = createAsyncThunk(
-    'auth/getUserPosts',
+    'post/getUserPosts',
     async ({ rejectWithValue }) => {
         try {
             const config = {
@@ -64,3 +64,28 @@ export const createPosts = createAsyncThunk(
         }
     }
 );
+
+export const getFeedPosts = createAsyncThunk(
+    'post/getFeedPosts',
+    async ({ rejectWithValue }) => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + String(getToken()),
+                },
+            }
+            const { data } = await axios.get(
+                `${backendURL}/api/Post/GetFeedPosts`,
+                config
+            )
+            return data
+        } catch (error) {
+            if (error.response && error.response.data) {
+                return rejectWithValue(error.response.data)
+            } else {
+                return rejectWithValue(error.message)
+            }
+        }
+    }
+)
