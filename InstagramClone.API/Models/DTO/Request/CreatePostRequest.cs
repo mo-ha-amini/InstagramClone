@@ -12,10 +12,10 @@ namespace Models.DTO.Request
     {
         public int UserId { get; set; }
 
-        [Required]
+        //[Required]
         public string Caption { get; set; }
 
-        [Required]
+        //[Required]
         public IFormFile MediaFile { get; set; }
     }
 }

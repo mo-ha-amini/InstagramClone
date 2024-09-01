@@ -49,9 +49,6 @@ namespace InstagramClone.API.Controllers
         public async Task<IActionResult> Follow(int followingId)
         {
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            //var token = Request.Headers["Authorization"].ToString();
-
-            Console.WriteLine(token);
             var handler = new JwtSecurityTokenHandler();
             var jwtToken = handler.ReadJwtToken(token);
 
@@ -71,7 +68,6 @@ namespace InstagramClone.API.Controllers
         [Authorize]
         public async Task<IActionResult> UnFollow(int followingId)
         {
-            Console.WriteLine(Request);
             var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
             var handler = new JwtSecurityTokenHandler();
             var jwtToken = handler.ReadJwtToken(token);
