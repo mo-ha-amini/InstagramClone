@@ -19,7 +19,7 @@ export const getfollowings = createAsyncThunk(
                     // Authorization: 'Bearer ' + String(getToken()),
                 },
             }
-            console.log(userId)
+            // console.log(userId)
             const { data } = await axios.post(
                 `${backendURL}/api/User/GetFollowings?UserId=${userId}`,
                 config
@@ -48,6 +48,58 @@ export const getfollowers= createAsyncThunk(
             }
             const { data } = await axios.post(
                 `${backendURL}/api/User/GetFollowers?UserId=${userId}`,
+                config
+            )
+            return data
+        } catch (error) {
+            if (error.response && error.response.data) {
+                return rejectWithValue(error.response.data)
+            } else {
+                return rejectWithValue(error.message)
+            }
+        }
+    }
+)
+
+export const Follow= createAsyncThunk(
+    'user/Follow',
+    async ({followingId},{ rejectWithValue }) => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + String(getToken()),
+                },
+            }
+            const { data } = await axios.post(
+                `${backendURL}/api/User/Follow?followingId=${followingId}`,
+                {},
+                config
+            )
+            return data
+        } catch (error) {
+            if (error.response && error.response.data) {
+                return rejectWithValue(error.response.data)
+            } else {
+                return rejectWithValue(error.message)
+            }
+        }
+    }
+)
+
+export const UnFollow= createAsyncThunk(
+    'user/UnFollow',
+    async ({followingId},{ rejectWithValue }) => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + String(getToken()),
+                },
+            }
+            const { data } = await axios.post(
+                `${backendURL}/api/User/UnFollow?followingId=${followingId}`,
+                {},
                 config
             )
             return data

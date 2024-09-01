@@ -14,7 +14,6 @@ function FollowersModal() {
   const {Loading, Followings:users, getFollowingsError, getFollowingsSuccess} = useSelector((stats)=> stats.user)
   const [open, setOpen] = useRecoilState(followingModalState);
   const [userId, setUserId] = useRecoilState(userIdState);
-  console.log(users)
   useEffect(() => {
     if (open) {
         dispatch(getfollowings({userId}));
@@ -66,7 +65,7 @@ function FollowersModal() {
                     {users?.map((user) => (
                       <div className="flex items-center" key={user.id}>
                         <img
-                          src={user.image}
+                          src={user.image ? user.image : '/images/default.png'}
                           alt={user.username}
                           className="mr-3 aspect-square h-14 w-14 rounded-full border-2 border-gray-300 object-cover p-[2px] text-center"
                         />

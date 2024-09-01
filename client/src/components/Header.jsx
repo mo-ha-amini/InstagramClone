@@ -85,7 +85,7 @@ function Header() {
               <div className="items-center">
                 <Link to={`/profile/${user.username}`}>
                   <img
-                    src={''}
+                    src={'/images/default.png'}
                     alt={user.username}
                     className="mt-1 aspect-square h-10 w-10 rounded-full border-2 border-gray-200 object-cover p-[1px]"
                   />

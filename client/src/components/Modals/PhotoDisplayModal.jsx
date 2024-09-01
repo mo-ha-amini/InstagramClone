@@ -92,7 +92,7 @@ export function Photo({ photoId, photo }) {
       <div className="md:-mr-1 md:border-r">
         <Header id={photoId} username={photo.username} userImage={photo.userImage} />
         <Image
-          src={photo.imageSrc}
+          src={photo.imageSrc ? photo.imageSrc : 'images/default.png'}
           caption={photo.caption}
           id={photoId}
           toggledLiked={toggledLiked}

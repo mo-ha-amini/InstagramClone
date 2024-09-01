@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getfollowers, getfollowings } from './userAction'
+import { getfollowers, getfollowings, Follow,UnFollow } from './userAction'
 
 const initialState = {
     Loading: false,
@@ -11,6 +11,12 @@ const initialState = {
     Followings: null,
     getFollowingsError: null,
     getFollowingsSuccess: false,
+
+    FollowError: null,
+    FollowSuccess: false,
+
+    UnFollowError: null,
+    UnFollowSuccess: false,
 }
 
 const userSlice = createSlice({
@@ -48,6 +54,34 @@ const userSlice = createSlice({
                 state.Loading = false;
                 state.getFollowingsError = action.payload.message;
                 state.getFollowingsSuccess = false;
+              })
+              .addCase(Follow.pending, (state) => {
+                state.Loading = true;
+                state.FollowSuccess = false;
+              })
+              .addCase(Follow.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.FollowSuccess = action.payload.isSuccess;
+                state.FollowError = action.payload.message;
+              })
+              .addCase(Follow.rejected, (state, action) => {
+                state.Loading = false;
+                state.FollowError = action.payload.message;
+                state.FollowSuccess = false;
+              })
+              .addCase(UnFollow.pending, (state) => {
+                state.Loading = true;
+                state.UnFollowSuccess = false;
+              })
+              .addCase(UnFollow.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.UnFollowSuccess = action.payload.isSuccess;
+                state.UnFollowError = action.payload.message;
+              })
+              .addCase(UnFollow.rejected, (state, action) => {
+                state.Loading = false;
+                state.UnFollowError = action.payload.message;
+                state.UnFollowSuccess = false;
               })
             }
 })

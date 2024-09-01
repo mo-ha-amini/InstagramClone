@@ -6,7 +6,7 @@ import {
   TagIcon,
   ViewGridIcon
 } from '@heroicons/react/outline';
-import PropTypes from 'prop-types';
+import PropTypes, { func } from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import {
   followersModalState,
@@ -20,10 +20,15 @@ import { isUserFollowingProfile, toggleFollow } from '../../services/firebase';
 import { userIdState } from '../../atoms/idAtom';
 import SuggestionsList from './SuggestionsList';
 import { HeadLoader } from './Loader';
-import { useSelector } from 'react-redux';
+import {getfollowings, Follow, UnFollow} from '../../features/user/userAction'
+import { useDispatch, useSelector } from 'react-redux';
 
 function Header({ photosCount, profile}) {
+  const dispatch = useDispatch()
   const {user} = useSelector((state) => state.auth)
+  const {Loading, Followings, getFollowingsError, getFollowingsSuccess} = useSelector((stats)=> stats.user)
+
+  // console.log(user)
   const activeButtonFollow = user.username && user.username !== profile.username;
   const [open, setOpen] = useRecoilState(userEditModal);
   const [isopen, setIsOpen] = useRecoilState(followersModalState);
@@ -31,22 +36,31 @@ function Header({ photosCount, profile}) {
   const [keepOpen, setKeepOpen] = useRecoilState(suggestionsListState);
   const [userId, setUserId] = useRecoilState(userIdState);
   const [isFollowingProfile, setIsFollowingProfile] = useState(false);
-  // useEffect(() => {
-  //   const isLoggedInUserFollowingProfile = async () => {
-  //     const isFollowing = await isUserFollowingProfile(user.username, profile.userId);
-  //     setIsFollowingProfile(!!isFollowing);
-  //   };
-  //   if (user.username && profile.userId) {
-  //     isLoggedInUserFollowingProfile();
-  //   }
-  // }, [user.username, profile.userId]);
+  
+  const checkfollowing = ( profileId,users) => {
+    users.forEach(user => {
+        if(user.id == profileId){
+          setIsFollowingProfile(true)
+          return;
+        }
+      });
+  }
+  useEffect(()=>{
+    dispatch(getfollowings({userId:user.id}))
+  },[])
 
+  useEffect(()=>{
+  if(Followings){
+    checkfollowing(profile.id, Followings)
+  }
+  },[user, Followings])
   const handleToggleFollow = async () => {
     setIsFollowingProfile((isFollowingProfile) => !isFollowingProfile);
-    // setFollowerCount({
-    //   followerCount: isFollowingProfile ? followerCount - 1 : followerCount + 1
-    // });
-    // await toggleFollow(isFollowingProfile, user.id, profile.id, profile.userId, user.userId);
+    if(isFollowingProfile){
+      dispatch(UnFollow({followingId: profile.id}))
+    }else{
+      dispatch(Follow({followingId: profile.id}))
+    }
   };
   return !profile ? (
     <HeadLoader />
@@ -54,7 +68,7 @@ function Header({ photosCount, profile}) {
     <div className="flex flex-col space-y-1 py-2">
       <div className="flex max-w-sm justify-evenly md:max-w-none md:py-2">
         <img
-          src={profile.image}
+          src={profile.image ? profile.image : '/images/default.png'}
           alt={profile.username}
           className="mx-4 aspect-square h-24 w-24 rounded-full object-cover sm:h-32 sm:w-32 md:h-40 md:w-40"
         />
