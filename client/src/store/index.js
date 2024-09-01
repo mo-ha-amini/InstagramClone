@@ -4,6 +4,8 @@ import {thunk} from 'redux-thunk'
 import auth from '../features/auth/authSlice'
 import post from '../features/post/postSlice'
 import profile from '../features/profile/profileSlice'
+import user from '../features/user/userSlice'
+
 
 
 
@@ -12,6 +14,7 @@ const store = configureStore({
         auth,
         post,
         profile,
+        user,
     },
 
     middleware: (getDefaultMiddleware) => {

@@ -8,8 +8,8 @@ const initialState = {
     Success: false,
 }
 
-const authSlice = createSlice({
-    name: 'auth',
+const profileSlice = createSlice({
+    name: 'profile',
     initialState,
     reducers: {},
     extraReducers:  (builder) => {
@@ -33,4 +33,4 @@ const authSlice = createSlice({
             }
 })
 
-export default authSlice.reducer
+export default profileSlice.reducer

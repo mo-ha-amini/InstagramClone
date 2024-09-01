@@ -6,26 +6,20 @@ import { Dialog, Transition } from '@headlessui/react';
 import { UserGroupIcon, XIcon } from '@heroicons/react/outline';
 import { getFollowers } from '../../services/firebase';
 import { Link } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {getfollowers} from '../../features/user/userAction'
 
 function FollowersModal() {
+  const dispatch = useDispatch()
+  const {Loading, Followers:users, getFollowersSuccess, getFollowersError} = useSelector((stats)=> stats.user)
   const [open, setOpen] = useRecoilState(followersModalState);
   const [userId, setUserId] = useRecoilState(userIdState);
-  const [users, setUsers] = useState([]);
+  console.log(users)
   useEffect(() => {
     if (open) {
-      //to fetch the users who have followed that user
-      const getUsers = async () => {
-        const result = await getFollowers(userId);
-        result.map((res) => {
-          setUsers((users) => [...users, res[0]]);
-        });
-      };
-      // to show the list of users who follow the user if his userId is present
-      if (userId !== '') {
-        getUsers();
-      }
+        dispatch(getfollowers({userId}));
     } else {
-      setUserId(''), setUsers([]);
+      setUserId('');
     }
   }, [userId, open, setUserId]);
   return (
@@ -78,7 +72,7 @@ function FollowersModal() {
                       <Link to={`/profile/${user.username}`} onClick={() => setOpen(false)}>
                         {user.username}
                       </Link>
-                      <p className="-mt-[2px] font-medium text-gray-600 ">{user.fullName}</p>
+                      <p className="-mt-[2px] font-medium text-gray-600 ">{user.name}</p>
                     </Dialog.Title>
                   </div>
                 ))}

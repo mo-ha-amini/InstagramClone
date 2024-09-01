@@ -4,7 +4,7 @@ import { toast } from 'react-toastify'
 import { useDispatch } from 'react-redux'
 
 const backendURL = `https://localhost:7198`
-console.log(backendURL)
+
 export const getToken = () => {
     return JSON.parse(localStorage.getItem('user')).token
 }

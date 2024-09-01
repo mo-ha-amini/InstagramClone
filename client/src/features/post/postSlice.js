@@ -8,8 +8,8 @@ const initialState = {
     getPostSuccess: false,
 }
 
-const authSlice = createSlice({
-    name: 'auth',
+const postSlice = createSlice({
+    name: 'post',
     initialState,
     reducers: {},
     extraReducers:  (builder) => {
@@ -32,4 +32,4 @@ const authSlice = createSlice({
             }
 })
 
-export default authSlice.reducer
+export default postSlice.reducer

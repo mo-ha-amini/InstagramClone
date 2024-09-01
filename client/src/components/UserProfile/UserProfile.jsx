@@ -17,17 +17,3 @@ function UserProfile({ profile }) {
 }
 
 export default UserProfile;
-
-UserProfile.propTypes = {
-  user: PropTypes.shape({
-    username: PropTypes.string.isRequired,
-    image: PropTypes.string.isRequired,
-    bio: PropTypes.string.isRequired,
-    fullName: PropTypes.string.isRequired,
-    userId: PropTypes.string.isRequired,
-    emailAddress: PropTypes.string.isRequired,
-    followers: PropTypes.array.isRequired,
-    following: PropTypes.array.isRequired,
-    dateCreated: PropTypes.number.isRequired
-  })
-};
