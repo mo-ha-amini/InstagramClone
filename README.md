@@ -41,7 +41,7 @@ InstagramClone is a full-stack web application that replicates the core features
 2. Update the connection string in `appsettings.json`:
    ```json
    "ConnectionStrings": {
-     "DefaultConnection": "Server=your_server;Database=InstagramDb;User Id=your_user;Password=your_password;"
+     "DefaultConnection": ""
    }
    ```
    or you can use database backup
