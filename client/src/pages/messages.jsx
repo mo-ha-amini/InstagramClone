@@ -1,15 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import Header from '../components/Header';
 import useUser from '../hooks/use-user';
-import { createUserMessage, getUserByUserId } from '../services/firebase';
 import { Link } from 'react-router-dom';
 import useQuery from '../hooks/use-query';
 import MessageBox from '../components/Messages/MessageBox';
 import { ArrowCircleRightIcon, PaperAirplaneIcon } from '@heroicons/react/outline';
 import SideProfile from '../components/Messages/SideProfile';
 import SearchBarModal from '../components/Modals/SearchBarModal';
-import SendMedia from '../components/Modals/SendMedia';
-import SendAudioModal from '../components/Modals/SendAudioModal';
 
 function Messages() {
   const {
@@ -21,8 +18,8 @@ function Messages() {
     const getUsers = async () =>
       following.map(async (followingUserId) => {
         //to fetch the user's data whom the user is Following
-        const otherUsers = await getUserByUserId(followingUserId);
-        const message = await createUserMessage(userId, followingUserId);
+        // const otherUsers = await getUserByUserId(followingUserId);
+        // const message = await createUserMessage(userId, followingUserId);
         if (otherUsers[0].userId === message.followingUserId) {
           otherUsers[0] = {
             ...otherUsers[0],
@@ -42,8 +39,6 @@ function Messages() {
   return (
     <div className="h-full">
       <SearchBarModal />
-      <SendAudioModal />
-      <SendMedia />
       <Header />
       <main className="relative mx-auto mt-20 flex max-h-fit justify-end space-x-2 p-2 sm:max-w-xl md:max-w-2xl lg:max-w-3xl xl:max-w-4xl">
         {users?.length > 0 && (

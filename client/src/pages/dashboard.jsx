@@ -6,8 +6,6 @@ import * as ROUTES from '../constants/routes';
 import { Link } from 'react-router-dom';
 import Feed from '../components/Feed/Feed';
 import PostModal from '../components/Modals/PostModal';
-import LikesModal from '../components/Modals/LikesModal';
-import CommentLikesModal from '../components/Modals/CommentLikesModal';
 import TopScroll from '../components/TopScroll';
 import SearchBarModal from '../components/Modals/SearchBarModal';
 
@@ -21,8 +19,6 @@ function Dashboard() {
     <div className="h-full min-h-screen overflow-hidden">
       <SearchBarModal />
       <PostModal />
-      <LikesModal />
-      <CommentLikesModal />
       <TopScroll />
       <Header />
       {user ? (

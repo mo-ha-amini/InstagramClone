@@ -4,7 +4,6 @@ import { followersModalState } from '../../atoms/modalAtom';
 import { userIdState } from '../../atoms/idAtom';
 import { Dialog, Transition } from '@headlessui/react';
 import { UserGroupIcon, XIcon } from '@heroicons/react/outline';
-import { getFollowers } from '../../services/firebase';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {getfollowers} from '../../features/user/userAction'

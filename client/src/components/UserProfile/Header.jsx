@@ -6,7 +6,6 @@ import {
   TagIcon,
   ViewGridIcon
 } from '@heroicons/react/outline';
-import PropTypes, { func } from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import {
   followersModalState,
@@ -14,11 +13,8 @@ import {
   suggestionsListState,
   userEditModal
 } from '../../atoms/modalAtom';
-import useUser from '../../hooks/use-user';
 import { useRecoilState } from 'recoil';
-import { isUserFollowingProfile, toggleFollow } from '../../services/firebase';
 import { userIdState } from '../../atoms/idAtom';
-import SuggestionsList from './SuggestionsList';
 import { HeadLoader } from './Loader';
 import {getfollowings, Follow, UnFollow} from '../../features/user/userAction'
 import { useDispatch, useSelector } from 'react-redux';

@@ -6,7 +6,6 @@ import { useRecoilState } from 'recoil';
 
 import { HeartIcon } from '@heroicons/react/outline';
 import { HeartIcon as HeartIconFilled } from '@heroicons/react/solid';
-import { isCommentLiked, likeComment } from '../../services/firebase';
 import { commentLikesModalState } from '../../atoms/modalAtom';
 import { commentIdState, photoIdState } from '../../atoms/idAtom';
 
@@ -16,19 +15,7 @@ function Comment({ photoId, commentId, userId, username, image, comment, postedA
   const [open, setOpen] = useRecoilState(commentLikesModalState);
   const [currentCommentId, setCurrentCommentId] = useRecoilState(commentIdState);
   const [currentPhotoId, setCurrentPhotoId] = useRecoilState(photoIdState);
-  const likedComment = async () => {
-    const result = await isCommentLiked(photoId, commentId, userId);
-    setToggledLiked(result);
-  };
-  if (photoId) {
-    likedComment();
-  }
-
-  const handleToggleLiked = async () => {
-    setToggledLiked((toggledLiked) => !toggledLiked);
-    await likeComment(photoId, commentId, userId, toggledLiked);
-    setLikes((likes) => (toggledLiked ? likes - 1 : likes + 1));
-  };
+  
   const handleToggleActive = async () => {
     setOpen(true);
     setCurrentCommentId(commentId);
@@ -60,20 +47,6 @@ function Comment({ photoId, commentId, userId, username, image, comment, postedA
           </div>
         </div>
       </div>
-      <button
-        onClick={handleToggleLiked}
-        onKeyDown={(event) => {
-          if (event.key === 'Enter') {
-            handleToggleLiked();
-          }
-        }}
-      >
-        {toggledLiked ? (
-          <HeartIconFilled className="-mt-3 h-5 w-5 text-red-500 transition-all  duration-150 ease-in-out hover:scale-125" />
-        ) : (
-          <HeartIcon className="-mt-3 h-5 w-5 text-gray-400 transition-all  duration-150 ease-in-out hover:scale-125" />
-        )}
-      </button>
     </div>
   );
 }

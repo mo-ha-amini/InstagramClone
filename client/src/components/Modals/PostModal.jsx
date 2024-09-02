@@ -3,8 +3,6 @@ import { useRecoilState } from 'recoil';
 import { postModalState } from '../../atoms/modalAtom';
 import { Dialog, Transition } from '@headlessui/react';
 import { CameraIcon, CloudUploadIcon, TrashIcon, XIcon } from '@heroicons/react/outline';
-import useUser from '../../hooks/use-user';
-import { addPostsToFirestore } from '../../services/firebase';
 import { useDispatch, useSelector } from 'react-redux';
 import {createPosts} from '../../features/post/postAction'
 

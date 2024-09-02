@@ -1,10 +1,5 @@
-import PropTypes from 'prop-types';
 import React, { useEffect, useState } from 'react';
 import { EmojiHappyIcon } from '@heroicons/react/outline';
-import { addComment, displayComment } from '../../services/firebase';
-import useUser from '../../hooks/use-user';
-import { getFirestore, onSnapshot } from 'firebase/firestore';
-import { firebaseApp } from '../../lib/firebase';
 import ReactTimeAgo from 'react-time-ago';
 import Comment from './Comment';
 import { useRecoilState } from 'recoil';

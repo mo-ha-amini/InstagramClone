@@ -12,7 +12,6 @@ import * as ROUTES from '../constants/routes';
 import { Link, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { postModalState, searchBarModalState } from '../atoms/modalAtom';
-import useUser from '../hooks/use-user';
 import {logout} from '../features/auth/authActions'
 import { useDispatch } from 'react-redux';
 

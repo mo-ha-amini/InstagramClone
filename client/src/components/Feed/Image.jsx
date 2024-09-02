@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
-import PropTypes from 'prop-types';
 import { HeartIcon } from '@heroicons/react/solid';
-import { updateLikes } from '../../services/firebase';
-import useUser from '../../hooks/use-user';
+
 import {likePost} from '../../features/post/postAction'
 import { useDispatch } from 'react-redux';
 

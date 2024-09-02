@@ -1,11 +1,8 @@
 import { DotsHorizontalIcon, TrashIcon } from '@heroicons/react/outline';
-import PropTypes from 'prop-types';
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Fragment } from 'react';
 import { Menu, Transition } from '@headlessui/react';
-import useUser from '../../hooks/use-user';
-import { deletePost } from '../../services/firebase';
 import { useSelector } from 'react-redux';
 
 function Header({ id, username, userImage }) {

@@ -4,9 +4,6 @@ import { useRecoilState } from 'recoil';
 import { likesModalState } from '../../atoms/modalAtom';
 import { photoIdState } from '../../atoms/idAtom';
 import { HeartIcon as HeartIconFilled } from '@heroicons/react/solid';
-import PropTypes from 'prop-types';
-import { updateLikes } from '../../services/firebase';
-import useUser from '../../hooks/use-user';
 
 import {likePost} from '../../features/post/postAction'
 import { useDispatch } from 'react-redux';

@@ -4,7 +4,6 @@ import { followingModalState } from '../../atoms/modalAtom';
 import { userIdState } from '../../atoms/idAtom';
 import { Dialog, Transition } from '@headlessui/react';
 import { UserGroupIcon, XIcon } from '@heroicons/react/outline';
-import { getFollowing } from '../../services/firebase';
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {getfollowings} from '../../features/user/userAction'

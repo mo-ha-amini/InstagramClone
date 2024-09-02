@@ -94,7 +94,7 @@ export const likePost = createAsyncThunk(
     'post/likePost',
     async ({ PostId }, { rejectWithValue }) => {
         try {
-            console.log(PostId)
+            // console.log(PostId)
             const config = {
                 headers: {
                     // 'Content-Type': 'multipart/form-data',

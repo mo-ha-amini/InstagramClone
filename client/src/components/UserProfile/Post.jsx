@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import PropTypes from 'prop-types';
 import { ChatIcon, HeartIcon } from '@heroicons/react/solid';
-import { getCommentsLength } from '../../services/firebase';
 import { useRecoilState } from 'recoil';
 import { photoDisplayModalState } from '../../atoms/modalAtom';
 import { photoIdState } from '../../atoms/idAtom';

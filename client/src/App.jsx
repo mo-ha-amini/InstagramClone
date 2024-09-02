@@ -1,7 +1,6 @@
 import React, { Suspense, lazy } from 'react';
 import { Route, BrowserRouter as Router } from 'react-router-dom';
 import * as ROUTES from './constants/routes';
-import useAuthListener from './hooks/use-auth-listener';
 import UserContext from './context/user';
 import ProtectedRoutes from './helpers/protected-route';
 import LoadRoutes from './helpers/load-routes';

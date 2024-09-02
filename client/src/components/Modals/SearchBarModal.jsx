@@ -3,7 +3,6 @@ import { useRecoilState } from 'recoil';
 import { searchBarModalState } from '../../atoms/modalAtom';
 import { Combobox, Dialog, Transition } from '@headlessui/react';
 import { SearchIcon } from '@heroicons/react/outline';
-import { getAllUsers } from '../../services/firebase';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {searchUser} from '../../features/user/userAction'
