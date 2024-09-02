@@ -39,5 +39,11 @@ namespace InstagramClone.API.Controllers
                 return BadRequest();
             }
         }
+        //[Authorize]
+        [HttpGet]
+        public async Task<IActionResult> GetComments(int PostId)
+        {
+            return Ok(await _commentService.GetCommentsOfPostByPostId(PostId));
+        }
     }
 }
