@@ -33,13 +33,3 @@ function Image({ src, caption, id, toggledLiked, setToggledLiked, likes, setLike
 }
 
 export default Image;
-
-Image.propTypes = {
-  src: PropTypes.string.isRequired,
-  caption: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
-  toggledLiked: PropTypes.bool.isRequired,
-  setToggledLiked: PropTypes.func.isRequired,
-  likes: PropTypes.number.isRequired,
-  setLikes: PropTypes.func.isRequired
-};

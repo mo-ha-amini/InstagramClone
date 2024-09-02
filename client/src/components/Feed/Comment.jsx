@@ -80,13 +80,3 @@ function Comment({ photoId, commentId, userId, username, image, comment, postedA
 
 export default Comment;
 
-Comment.propTypes = {
-  photoId: PropTypes.string.isRequired,
-  commentId: PropTypes.string.isRequired,
-  userId: PropTypes.string,
-  username: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  comment: PropTypes.string.isRequired,
-  postedAt: PropTypes.object,
-  totalLikes: PropTypes.number
-};

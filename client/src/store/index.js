@@ -5,6 +5,8 @@ import auth from '../features/auth/authSlice'
 import post from '../features/post/postSlice'
 import profile from '../features/profile/profileSlice'
 import user from '../features/user/userSlice'
+import comment from '../features/comment/commentSlice'
+
 
 
 
@@ -15,6 +17,7 @@ const store = configureStore({
         post,
         profile,
         user,
+        comment,
     },
 
     middleware: (getDefaultMiddleware) => {

@@ -60,16 +60,3 @@ function Post({ content }) {
 }
 
 export default Post;
-
-Post.propTypes = {
-  content: PropTypes.shape({
-    username: PropTypes.string.isRequired,
-    userImage: PropTypes.string.isRequired,
-    imageSrc: PropTypes.string.isRequired,
-    caption: PropTypes.string.isRequired,
-    id: PropTypes.string.isRequired,
-    userLikedPhoto: PropTypes.bool.isRequired,
-    likes: PropTypes.array,
-    timestamp: PropTypes.object.isRequired
-  })
-};

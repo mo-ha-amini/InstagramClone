@@ -36,3 +36,30 @@ export const createComment = createAsyncThunk(
         }
     }
 );
+
+export const getComment = createAsyncThunk(
+    'Comment/getComment',
+    async ({ PostId}, { rejectWithValue }) => {
+        try {
+            
+            const config = {
+                headers: {
+                    // 'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + String(getToken()),
+                },
+            };
+
+            const { data } = await axios.get(
+                `${backendURL}/api/Comment/GetComments?PostId=${PostId}`,
+                config
+            );
+            return data;
+        } catch (error) {
+            if (error.response && error.response.data) {
+                return rejectWithValue(error.response.data);
+            } else {
+                return rejectWithValue(error.message);
+            }
+        }
+    }
+);

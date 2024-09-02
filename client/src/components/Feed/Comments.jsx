@@ -11,23 +11,21 @@ import { useRecoilState } from 'recoil';
 import { photoDisplayModalState } from '../../atoms/modalAtom';
 import Picker, { SKIN_TONE_MEDIUM_LIGHT } from 'emoji-picker-react';
 
-import { createComment } from '../../features/comment/commentAction'
-import { useDispatch } from 'react-redux';
+import { createComment,getComment } from '../../features/comment/commentAction'
+import { useDispatch, useSelector } from 'react-redux';
 
 function Comments({ id, commentInput, comments, user }) {
+
+  const {Loading, Comments, getCommentsError, getCommentsSuccess} = useSelector((state)=>state.comment)
   const dispatch = useDispatch();
   const [comment, setComment] = useState('');
   const [isopen, setIsOpen] = useRecoilState(photoDisplayModalState);
   // realtime update the comments section
   useEffect(() => {
-    async function showComments() {
-      // onSnapshot(displayComment(id), (snapshot) => {
-      //   // setComments(snapshot.docs);
-      // });
-    }
-    showComments();
+      dispatch(getComment({PostId:id}))
   }, [id]);
 
+  // console.log(Comments)
   const sendComment = async (event) => {
     event.preventDefault();
     const commentToSend = comment;
@@ -41,19 +39,19 @@ function Comments({ id, commentInput, comments, user }) {
   return (
     <div>
       {/* Display Comments */}
-      {comments.length > 0 && (
+      {Comments && Comments.length > 0 && (
         <div
           className={`max-h-[108px] overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-500 ${
             isopen && '-ml-6 md:max-h-80'
           }`}
         >
-          {comments.map((comment) => (
+          {Comments.map((comment) => (
             <div className="" key={comment.id}>
               <Comment
                 photoId={id}
                 commentId={comment.id}
                 userId={0}
-                username={comment.userId}
+                username={comment.username}
                 image={'/images/default.png'}
                 comment={comment.commentText}
                 // postedAt={Date.now()}
