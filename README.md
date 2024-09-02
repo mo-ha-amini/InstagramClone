@@ -32,13 +32,10 @@ InstagramClone is a full-stack web application that replicates the core features
 
 ## Installation
 
-rver
-
 ### Backend Setup
 1. Clone the repository:
    ```bash
    git clone https://github.com/mo-ha-amini/InstagramClone.git
-   cd InstagramClone/Server
    ```
 
 2. Update the connection string in `appsettings.json`:
