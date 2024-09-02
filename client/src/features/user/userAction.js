@@ -112,3 +112,28 @@ export const UnFollow= createAsyncThunk(
         }
     }
 )
+
+export const searchUser= createAsyncThunk(
+    'user/searchUser',
+    async ({query},{ rejectWithValue }) => {
+        try {
+            const config = {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': 'Bearer ' + String(getToken()),
+                },
+            }
+            const { data } = await axios.get(
+                `${backendURL}/api/User/SearchUser?query=${query}`,
+                config
+            )
+            return data
+        } catch (error) {
+            if (error.response && error.response.data) {
+                return rejectWithValue(error.response.data)
+            } else {
+                return rejectWithValue(error.message)
+            }
+        }
+    }
+)

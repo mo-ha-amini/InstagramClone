@@ -5,21 +5,26 @@ import { Combobox, Dialog, Transition } from '@headlessui/react';
 import { SearchIcon } from '@heroicons/react/outline';
 import { getAllUsers } from '../../services/firebase';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import {searchUser} from '../../features/user/userAction'
 
 function SearchBarModal() {
+  const dispatch = useDispatch()
+  const {Loading, SearchSuccess, SearchedUser, FollowError} = useSelector((state)=> state.user)
+
   const [open, setOpen] = useRecoilState(searchBarModalState);
-  const [users, setUsers] = useState([]);
+  // const [users, setUsers] = useState([]);
   const [query, setQuery] = useState('');
   const navigate = useNavigate();
-  const filteredUsers = query
-    ? users.filter((user) => user.username.toLowerCase().includes(query.toLowerCase()))
-    : [];
+ 
+  useEffect(()=>{
+    if(query.length >= 3){
+      dispatch(searchUser({query}))
+    }
+  },[query])
+  
+  
   useEffect(() => {
-    const fetchUsers = async () => {
-      const result = await getAllUsers();
-      setUsers(result);
-    };
-    fetchUsers();
     function onKeydown(event) {
       if (event.key === 'k' && (event.metaKey || event.ctrlKey)) {
         setOpen(true);
@@ -34,7 +39,6 @@ function SearchBarModal() {
   }, [open, setOpen]);
 
   return (
-    users && (
       <Transition.Root show={open} as={Fragment} afterLeave={() => setQuery('')}>
         <Dialog as="div" className="fixed inset-0 z-[60] overflow-y-auto" onClose={setOpen}>
           <div className="m-2 flex min-h-screen items-start justify-center px-4 pt-4 pb-20 text-center sm:p-0">
@@ -84,9 +88,9 @@ function SearchBarModal() {
                     ESC
                   </button>
                 </div>
-                {filteredUsers.length > 0 && (
+                {SearchedUser.length > 0 && (
                   <Combobox.Options static className="max-h-60 overflow-y-auto py-4">
-                    {filteredUsers.map((user) => (
+                    {SearchedUser.map((user) => (
                       <Combobox.Option key={user.id} value={user.username}>
                         {({ active }) => (
                           <div
@@ -95,14 +99,14 @@ function SearchBarModal() {
                             }`}
                           >
                             <img
-                              src={user.image}
+                              src={user.image ? user.image : '/images/default.png'}
                               className="aspect-square h-12 w-12 rounded-full border border-gray-200 object-cover shadow-sm"
                               alt={user.username}
                             />
                             <p className="flex flex-col">
                               <span className="font-semibold">{user.username}</span>
                               <span className="-mt-1 font-normal text-gray-500">
-                                {user.fullName}
+                                {user.name}
                               </span>
                             </p>
                           </div>
@@ -111,7 +115,7 @@ function SearchBarModal() {
                     ))}
                   </Combobox.Options>
                 )}
-                {query && filteredUsers.length === 0 && (
+                {query && SearchedUser.length === 0 && (
                   <p className="p-4 text-gray-500">No results found.</p>
                 )}
               </Combobox>
@@ -120,7 +124,6 @@ function SearchBarModal() {
         </Dialog>
       </Transition.Root>
     )
-  );
 }
 
 export default SearchBarModal;

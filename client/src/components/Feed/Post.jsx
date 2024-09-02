@@ -13,7 +13,7 @@ function Post({ content }) {
   const commentInput = useRef(null);
   const [toggledLiked, setToggledLiked] = useState(false);
   const [likes, setLikes] = useState(content.likes?.length);
-  console.log(content)
+  // console.log(content)
   const imageSrc = `data:image/jpeg;base64,${content.media}`;
 
   const checklike = ( userId, likes) => {

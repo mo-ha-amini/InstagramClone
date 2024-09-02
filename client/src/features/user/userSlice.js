@@ -1,5 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit'
-import { getfollowers, getfollowings, Follow,UnFollow } from './userAction'
+import { getfollowers, getfollowings, Follow, UnFollow, searchUser } from './userAction'
 
 const initialState = {
     Loading: false,
@@ -17,6 +17,10 @@ const initialState = {
 
     UnFollowError: null,
     UnFollowSuccess: false,
+
+    SearchedUser: [],
+    SearchError: null,
+    SearchSuccess: false,
 }
 
 const userSlice = createSlice({
@@ -83,6 +87,23 @@ const userSlice = createSlice({
                 state.UnFollowError = action.payload.message;
                 state.UnFollowSuccess = false;
               })
+
+              .addCase(searchUser.pending, (state) => {
+                state.Loading = true;
+                state.SearchSuccess = false;
+              })
+              .addCase(searchUser.fulfilled, (state, action) => {
+                state.Loading = false;
+                state.SearchSuccess = action.payload.isSuccess;
+                state.SearchedUser = action.payload.data;
+                state.FollowError = action.payload.message;
+              })
+              .addCase(searchUser.rejected, (state, action) => {
+                state.Loading = false;
+                state.FollowError = action.payload.message;
+                state.SearchSuccess = false;
+              })
+
             }
 })
 
