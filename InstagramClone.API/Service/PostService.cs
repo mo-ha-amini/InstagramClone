@@ -60,5 +60,17 @@ namespace Service
 
             return result;
         }
+
+        public async Task<CustomActionResult> likePost(int UserId, int PostId)
+        {
+            CustomActionResult result = new CustomActionResult();
+
+            var checkResult = await _postRepository.likePost(UserId, PostId);
+            result.IsSuccess = checkResult.IsSuccess;
+            result.Message = checkResult.Message;
+            if (!result.IsSuccess) return result;
+
+            return result;
+        }
     }
 }

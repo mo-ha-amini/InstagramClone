@@ -66,5 +66,26 @@ namespace InstagramClone.API.Controllers
                 return BadRequest();
             }
         }
+
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> LikePost(int PostId)
+        {
+            var token = Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+            var handler = new JwtSecurityTokenHandler();
+            var jwtToken = handler.ReadJwtToken(token);
+
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(claim => claim.Type == "UserId");
+            if (userIdClaim != null)
+            {
+                int UserId = int.Parse(userIdClaim.Value);
+                return Ok(await _postService.likePost(UserId, PostId));
+            }
+            else
+            {
+                return BadRequest();    
+            }
+
+        }
     }
 }

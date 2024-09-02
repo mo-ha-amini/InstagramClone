@@ -121,6 +121,37 @@ namespace Repository
             }
             return result;
         }
-    
+
+        public async Task<CustomActionResult> likePost(int UserId, int PostId)
+        {
+            CustomActionResult result = new CustomActionResult();
+
+            try
+            {
+                CustomActionResult<IDbConnection> connection = await _databaseConnection.GetConnection();
+                result.IsSuccess = connection.IsSuccess;
+                result.Message = connection.Message;
+
+                if (!result.IsSuccess) return result;
+
+                string command = @"prc_like_post";
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@UserId", UserId);
+                parameters.Add("@PostId", PostId);
+
+                await connection.Data.ExecuteAsync(command, parameters, commandType: CommandType.StoredProcedure);
+
+                result.IsSuccess = true;
+                result.Message = "Like Success";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                result.IsSuccess = false;
+                result.Message = "Failed to Like post";
+            }
+
+            return result;
+        }
     }
 }
