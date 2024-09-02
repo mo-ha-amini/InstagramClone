@@ -97,5 +97,12 @@ namespace InstagramClone.API.Controllers
         {
             return Ok(await _userService.getFollowingsById(UserId));
         }
+
+        [HttpGet]
+        [Authorize]
+        public async Task<IActionResult> SearchUser(string query)
+        {
+            return Ok(await _userService.SearchUser(query));
+        }
     }
 }

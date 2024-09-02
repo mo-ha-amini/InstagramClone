@@ -18,7 +18,7 @@ namespace Service.Interface
         Task<CustomActionResult> UnFollow(int userId, int followingId);
         Task<CustomActionResult<List<getfollowerResponse>>> getFollowingsById(int userId);
         Task<CustomActionResult<List<getfollowerResponse>>> getFollowersById(int userId);
-
+        Task<CustomActionResult<List<SearchUserRespone>>> SearchUser(string query);
 
     }
 }

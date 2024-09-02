@@ -293,5 +293,34 @@ namespace Repository
 
             return result;
         }
+
+        public async Task<CustomActionResult<List<SearchUserRespone>>> SearchUser(string query)
+        {
+            CustomActionResult<List<SearchUserRespone>> result = new CustomActionResult<List<SearchUserRespone>>();
+            try
+            {
+                CustomActionResult<IDbConnection> connection = await _databaseConnection.GetConnection();
+                result.IsSuccess = connection.IsSuccess;
+                result.Message = connection.Message;
+                if (!result.IsSuccess) return result;
+
+                string command = @"prc_search_users";
+                DynamicParameters parameters = new DynamicParameters();
+                parameters.Add("@Query", query);
+
+                var data = await connection.Data.QueryAsync<SearchUserRespone>(command, parameters, commandType: CommandType.StoredProcedure);
+                result.Data = data.ToList();
+                result.IsSuccess = true;
+                result.Message = "Success";
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                result.IsSuccess = false;
+                result.Message = "Failed";
+            }
+
+            return result;
+        }
     }
 }

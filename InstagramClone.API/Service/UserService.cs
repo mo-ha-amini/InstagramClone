@@ -140,5 +140,18 @@ namespace Service
 
             return result;
         }
+
+        public async Task<CustomActionResult<List<SearchUserRespone>>> SearchUser(string query)
+        {
+            CustomActionResult<List<SearchUserRespone>> result = new CustomActionResult<List<SearchUserRespone>>();
+
+            var checkResult = await _userRepository.SearchUser(query);
+
+            result.IsSuccess = checkResult.IsSuccess;
+            result.Message = checkResult.Message;
+            result.Data = checkResult.Data;
+
+            return result;
+        }
     }
 }
