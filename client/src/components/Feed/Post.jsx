@@ -53,7 +53,7 @@ function Post({ content }) {
         <Captions caption={content.caption} username={content.username} />
       </div>
       <div>
-        {/* <Comments id={content.id} postedAt={content.timestamp} commentInput={commentInput} /> */}
+        <Comments id={content.id} commentInput={commentInput} comments={content.comments} user={{username: content.username, image:content.userImage}} />
       </div>
     </div>
   );

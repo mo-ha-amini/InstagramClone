@@ -10,31 +10,30 @@ import Comment from './Comment';
 import { useRecoilState } from 'recoil';
 import { photoDisplayModalState } from '../../atoms/modalAtom';
 import Picker, { SKIN_TONE_MEDIUM_LIGHT } from 'emoji-picker-react';
-function Comments({ id, postedAt, commentInput }) {
-  const {
-    user: { username, image, userId }
-  } = useUser();
-  const [comments, setComments] = useState([]);
+
+import { createComment } from '../../features/comment/commentAction'
+import { useDispatch } from 'react-redux';
+
+function Comments({ id, commentInput, comments, user }) {
+  const dispatch = useDispatch();
   const [comment, setComment] = useState('');
-  const db = getFirestore(firebaseApp);
   const [isopen, setIsOpen] = useRecoilState(photoDisplayModalState);
   // realtime update the comments section
   useEffect(() => {
     async function showComments() {
-      onSnapshot(displayComment(id), (snapshot) => {
-        setComments(snapshot.docs);
-      });
+      // onSnapshot(displayComment(id), (snapshot) => {
+      //   // setComments(snapshot.docs);
+      // });
     }
     showComments();
-  }, [db, id]);
+  }, [id]);
 
-  // push the comment into firestore
   const sendComment = async (event) => {
     event.preventDefault();
     const commentToSend = comment;
     setComment('');
     setShowEmojis(false);
-    await addComment(id, commentToSend, username, image);
+    dispatch(createComment({ PostId: id, CommentText:commentToSend}));
   };
 
   const [showEmojis, setShowEmojis] = useState(false);
@@ -53,12 +52,12 @@ function Comments({ id, postedAt, commentInput }) {
               <Comment
                 photoId={id}
                 commentId={comment.id}
-                userId={userId}
-                username={comment.data().username}
-                image={comment.data().userImage}
-                comment={comment.data().comment}
-                postedAt={comment.data()?.timestamp}
-                totalLikes={comment.data().likes?.length}
+                userId={0}
+                username={comment.userId}
+                image={'/images/default.png'}
+                comment={comment.commentText}
+                // postedAt={Date.now()}
+                totalLikes={0}
               />
             </div>
           ))}
@@ -112,21 +111,15 @@ function Comments({ id, postedAt, commentInput }) {
         </form>
       </div>
       <div className="p-4">
-        <ReactTimeAgo
-          date={postedAt.toDate()}
+        {/* <ReactTimeAgo
+          date={Date.now()}
           locale="en-US"
           timeStyle="round"
           className="mt-2 text-xs capitalize text-gray-400"
-        />
+        /> */}
       </div>
     </div>
   );
 }
 
 export default Comments;
-
-Comments.propTypes = {
-  id: PropTypes.string.isRequired,
-  postedAt: PropTypes.object.isRequired,
-  commentInput: PropTypes.object
-};

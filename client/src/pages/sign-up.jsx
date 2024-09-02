@@ -56,7 +56,7 @@ function SignUp() {
 
   
   useEffect(() => {
-    document.title = 'Sign Up - Instagram 2.0';
+    document.title = 'Sign Up - Instagram';
   }, []);
 
   
