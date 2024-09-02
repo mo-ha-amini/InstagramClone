@@ -1,0 +1,16 @@
+﻿using Models.DTO.Request;
+using Models;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Service.Interface
+{
+    public interface ICommentRepository
+    {
+        Task<CustomActionResult> CreateComment(CreateCommentRequest model);
+
+    }
+}

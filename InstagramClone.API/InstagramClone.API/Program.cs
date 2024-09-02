@@ -67,12 +67,16 @@ namespace InstagramClone.API
             #region repository
             builder.Services.AddSingleton<IUserRepository, UserRepository>();
             builder.Services.AddSingleton<IPostRepository, PostRepository>();
+            builder.Services.AddSingleton<ICommentRepository, CommentRepository>();
+
             #endregion
 
 
             #region Service
             builder.Services.AddSingleton<IUserService, UserService>();
             builder.Services.AddSingleton<IPostService, PostService>();
+            builder.Services.AddSingleton<ICommentService, CommentService>();
+
             #endregion
 
             builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme).AddJwtBearer(

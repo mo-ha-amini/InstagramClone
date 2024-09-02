@@ -2,20 +2,14 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace Models.Entities
+namespace Models.DTO.Request
 {
-    public class Comment
+    public class CreateCommentRequest
     {
-        public int Id { get; set; }
         public int PostId { get; set; }
         public int UserId { get; set; }
         public string CommentText { get; set; }
-        [JsonIgnore]
-        public Post Post { get; set; }
-        [JsonIgnore]
-        public User User { get; set; }
     }
 }
