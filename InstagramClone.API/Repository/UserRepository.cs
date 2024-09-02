@@ -38,7 +38,7 @@ namespace Repository
 
                 if(!result.IsSuccess) return result;
 
-                string command = @"CreateUser";
+                string command = @"prc_create_user";
                 DynamicParameters parameters = new DynamicParameters();
                 //parameters.Add("@Id", model.Id);
                 parameters.Add("@Email", model.Email);
@@ -183,7 +183,7 @@ namespace Repository
 
                 if (!result.IsSuccess) return result;
 
-                string command = @"Prc_follow_user";
+                string command = @"prc_follow_user";
                 DynamicParameters parameters = new DynamicParameters();
                 parameters.Add("@UserId", userId);
                 parameters.Add("@FollowingId", followingId);
