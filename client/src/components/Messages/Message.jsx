@@ -85,7 +85,3 @@ function Message({ messageId, messageRef }) {
 }
 
 export default Message;
-
-Message.propType = {
-  messageId: PropTypes.string.isRequired
-};

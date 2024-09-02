@@ -212,19 +212,3 @@ function Header({ photosCount, profile}) {
 }
 
 export default Header;
-
-// Header.propTypes = {
-//   photosCount: PropTypes.number.isRequired,
-//   followerCount: PropTypes.number.isRequired,
-//   followingCount: PropTypes.number.isRequired,
-//   setFollowerCount: PropTypes.func.isRequired,
-//   profile: PropTypes.shape({
-//     id: PropTypes.string,
-//     userId: PropTypes.string,
-//     username: PropTypes.string,
-//     image: PropTypes.string,
-//     bio: PropTypes.string,
-//     fullName: PropTypes.string,
-//     following: PropTypes.array
-//   }).isRequired
-// };

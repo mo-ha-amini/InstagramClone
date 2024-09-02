@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { Fragment, useEffect, useRef, useState } from 'react';
 import Header from './Header';
 import Image from './Image';
 import Buttons from './Buttons';
@@ -9,6 +9,8 @@ import { useSelector } from 'react-redux';
 
 function Post({ content }) {
   const {user} = useSelector((state)=> state.auth)
+  const {Loading} = useSelector((state)=> state.post)
+
   const handleFocus = () => commentInput.current.focus();
   const commentInput = useRef(null);
   const [toggledLiked, setToggledLiked] = useState(false);
@@ -30,6 +32,8 @@ function Post({ content }) {
   },[user])
 
   return (
+    !Loading && (
+
     <div className="container my-5 divide-y rounded-md border bg-white shadow-md">
       <Header id={content.id} username={content.username} userImage={content.userImage} />
       <Image
@@ -56,6 +60,7 @@ function Post({ content }) {
         <Comments id={content.id} commentInput={commentInput} comments={content.comments} user={{username: content.username, image:content.userImage}} />
       </div>
     </div>
+   )
   );
 }
 

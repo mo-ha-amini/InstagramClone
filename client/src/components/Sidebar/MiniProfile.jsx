@@ -21,9 +21,3 @@ function MiniProfile({ username, fullName, image }) {
   );
 }
 export default MiniProfile;
-
-MiniProfile.propTypes = {
-  username: PropTypes.string,
-  fullName: PropTypes.string,
-  image: PropTypes.string
-};

@@ -32,6 +32,3 @@ function usePhotos({ userId: activeUserId }) {
 
 export default usePhotos;
 
-usePhotos.propTypes = {
-  activeUserId: PropTypes.string
-};

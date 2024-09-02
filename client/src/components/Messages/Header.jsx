@@ -45,8 +45,3 @@ export function Header({ username, image }) {
     </div>
   );
 }
-
-Header.propType = {
-  username: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired
-};

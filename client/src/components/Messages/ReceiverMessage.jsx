@@ -79,14 +79,3 @@ function ReceiverMessage({ message, image, username, sentAt, isImage, isVideo, i
 }
 
 export default ReceiverMessage;
-
-ReceiverMessage.propType = {
-  message: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
-  sentAt: PropTypes.object.isRequired,
-  isImage: PropTypes.bool.isRequired,
-  isVideo: PropTypes.bool.isRequired,
-  isAudio: PropTypes.bool.isRequired,
-  audioId: PropTypes.string.isRequired
-};

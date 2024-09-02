@@ -41,11 +41,3 @@ function SideProfile({ open, username, image, activeUserId, followingUserId }) {
 }
 
 export default SideProfile;
-
-SideProfile.propType = {
-  open: PropTypes.bool.isRequired,
-  username: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  activeUserId: PropTypes.string.isRequired,
-  followingUserId: PropTypes.string.isRequired
-};

@@ -35,8 +35,3 @@ function MessageBox({ userId, messageId }) {
 }
 
 export default MessageBox;
-
-MessageBox.propType = {
-  userId: PropTypes.string.isRequired,
-  messageId: PropTypes.string.isRequired
-};

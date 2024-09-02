@@ -89,3 +89,31 @@ export const getFeedPosts = createAsyncThunk(
         }
     }
 )
+
+export const likePost = createAsyncThunk(
+    'post/likePost',
+    async ({ PostId }, { rejectWithValue }) => {
+        try {
+            console.log(PostId)
+            const config = {
+                headers: {
+                    // 'Content-Type': 'multipart/form-data',
+                    'Authorization': 'Bearer ' + String(getToken()),
+                },
+            };
+
+            const { data } = await axios.post(
+                `${backendURL}/api/Post/LikePost?PostId=${PostId}`,
+                {},
+                config
+            );
+            return data;
+        } catch (error) {
+            if (error.response && error.response.data) {
+                return rejectWithValue(error.response.data);
+            } else {
+                return rejectWithValue(error.message);
+            }
+        }
+    }
+);

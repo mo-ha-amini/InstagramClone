@@ -56,8 +56,3 @@ function Stories({ activeUserId, following }) {
 }
 
 export default Stories;
-
-Stories.propTypes = {
-  activeUserId: PropTypes.string,
-  following: PropTypes.array
-};

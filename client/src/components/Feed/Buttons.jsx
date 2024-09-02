@@ -8,16 +8,20 @@ import PropTypes from 'prop-types';
 import { updateLikes } from '../../services/firebase';
 import useUser from '../../hooks/use-user';
 
+import {likePost} from '../../features/post/postAction'
+import { useDispatch } from 'react-redux';
+
 function Buttons({ id, handleFocus, toggledLiked, setToggledLiked, likes, setLikes }) {
-  const {
-    user: { userId }
-  } = useUser();
+  const dispatch = useDispatch()
+
   const [open, setOpen] = useRecoilState(likesModalState);
   const [photoId, setPhotoId] = useRecoilState(photoIdState);
   // update the like count of the photo
   const handleToggleLiked = async () => {
     setToggledLiked((toggledLiked) => !toggledLiked);
-    await updateLikes(id, userId, toggledLiked);
+    if(!toggledLiked){
+      dispatch(likePost({PostId:id}))
+    }
     setLikes((likes) => (toggledLiked ? likes - 1 : likes + 1));
   };
   const handleToggleActive = async () => {
@@ -67,11 +71,4 @@ function Buttons({ id, handleFocus, toggledLiked, setToggledLiked, likes, setLik
 
 export default Buttons;
 
-Buttons.propTypes = {
-  id: PropTypes.string.isRequired,
-  handleFocus: PropTypes.func.isRequired,
-  toggledLiked: PropTypes.bool.isRequired,
-  setToggledLiked: PropTypes.func.isRequired,
-  likes: PropTypes.number.isRequired,
-  setLikes: PropTypes.func.isRequired
-};
+

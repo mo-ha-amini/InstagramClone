@@ -14,8 +14,3 @@ function Captions({ caption, username }) {
 }
 
 export default Captions;
-
-Captions.propType = {
-  caption: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired
-};

@@ -65,9 +65,3 @@ function Header({ id, username, userImage }) {
 }
 
 export default Header;
-
-Header.propTypes = {
-  id: PropTypes.string,
-  username: PropTypes.string.isRequired,
-  userImage: PropTypes.string.isRequired
-};

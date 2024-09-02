@@ -66,8 +66,3 @@ function MessageInput({ messageId, messageRef }) {
 }
 
 export default MessageInput;
-
-MessageInput.propType = {
-  messageId: PropTypes.string.isRequired,
-  messageRef: PropTypes.object
-};

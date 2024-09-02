@@ -45,12 +45,4 @@ function SuggestedProfile({
 
 export default SuggestedProfile;
 
-SuggestedProfile.propType = {
-  profileDocId: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
-  fullName: PropTypes.string.isRequired,
-  userImage: PropTypes.string.isRequired,
-  profileId: PropTypes.string.isRequired,
-  loggedInUserId: PropTypes.string.isRequired,
-  loggedInUserDocId: PropTypes.string.isRequired
-};
+

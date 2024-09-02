@@ -76,13 +76,3 @@ function SenderMessage({ message, image, username, sentAt, isImage, isVideo, isA
 
 export default SenderMessage;
 
-SenderMessage.propType = {
-  message: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
-  sentAt: PropTypes.object.isRequired,
-  isImage: PropTypes.bool.isRequired,
-  isVideo: PropTypes.bool.isRequired,
-  isAudio: PropTypes.bool.isRequired,
-  audioId: PropTypes.string.isRequired
-};

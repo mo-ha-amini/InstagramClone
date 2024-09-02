@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 function Comments({ id, commentInput, comments, user }) {
 
-  const {Loading, Comments, getCommentsError, getCommentsSuccess} = useSelector((state)=>state.comment)
+  // const {Loading, Comments, getCommentsError, getCommentsSuccess} = useSelector((state)=>state.comment)
   const dispatch = useDispatch();
   const [comment, setComment] = useState('');
   const [isopen, setIsOpen] = useRecoilState(photoDisplayModalState);
@@ -25,7 +25,7 @@ function Comments({ id, commentInput, comments, user }) {
       dispatch(getComment({PostId:id}))
   }, [id]);
 
-  // console.log(Comments)
+  // console.log(comments)
   const sendComment = async (event) => {
     event.preventDefault();
     const commentToSend = comment;
@@ -39,13 +39,13 @@ function Comments({ id, commentInput, comments, user }) {
   return (
     <div>
       {/* Display Comments */}
-      {Comments && Comments.length > 0 && (
+      {comments && comments.length > 0 && (
         <div
           className={`max-h-[108px] overflow-y-scroll scrollbar-thin scrollbar-thumb-gray-500 ${
             isopen && '-ml-6 md:max-h-80'
           }`}
         >
-          {Comments.map((comment) => (
+          {comments.map((comment) => (
             <div className="" key={comment.id}>
               <Comment
                 photoId={id}

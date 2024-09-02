@@ -96,10 +96,3 @@ function AudioMessage({ message, image, username, audioId }) {
 }
 
 export default AudioMessage;
-
-AudioMessage.propType = {
-  message: PropTypes.string.isRequired,
-  image: PropTypes.string.isRequired,
-  username: PropTypes.string.isRequired,
-  audioId: PropTypes.string.isRequired
-};

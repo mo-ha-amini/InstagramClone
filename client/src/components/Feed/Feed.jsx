@@ -19,8 +19,7 @@ function Feed() {
     dispatch(getFeedPosts({}))
   }, [])
 
-  console.log(FeedPosts)
-  return !FeedPosts ? (
+  return !FeedPosts || Loading ? (
     <Loader />
   ) : FeedPosts?.length > 0 ? (
     <>
